@@ -1,0 +1,66 @@
+{
+  "authSidebar": {
+    "message": "The Haunted ToDo List Tasks That Won’t Stay Buried!"
+  },
+  "signin": {
+    "title": "Sign in",
+    "subtitle": "Log in to unlock tailored content and stay connected with your community.",
+    "email": "Email",
+    "password": "Password",
+    "emailPlaceholder": "Enter your email",
+    "passwordPlaceholder": "Enter your password",
+    "signInButton": "Sign In",
+    "noAccount": "Don't have an account?",
+    "signUpLink": "Sign up",
+    "errors": {
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 6 characters",
+      "invalidCredentials": "Invalid email or password. Please try again.",
+      "generalError": "Something went wrong. Please try again."
+    }
+  },
+  "signup": {
+    "title": "Create an account",
+    "subtitle": "Let's get started. Fill in the details below to create your account.",
+    "name": "Name",
+    "email": "Email",
+    "password": "Password",
+    "namePlaceholder": "Enter your full name",
+    "emailPlaceholder": "Enter your email",
+    "passwordPlaceholder": "Create a strong password",
+    "upload": "Upload",
+    "uploadAvatar": "Upload Avatar",
+    "avatarOptional": "Optional. Max 5MB, JPG/PNG only",
+    "passwordRequirements": "Minimum 8 characters",
+    "signUpButton": "Sign up",
+    "haveAccount": "Already have an account?",
+    "signInLink": "Sign in",
+    "errors": {
+      "nameRequired": "Name is required",
+      "nameMinLength": "Name must be at least 2 characters",
+      "nameMaxLength": "Name must be less than 50 characters",
+      "emailRequired": "Email is required",
+      "emailInvalid": "Please enter a valid email address",
+      "passwordRequired": "Password is required",
+      "passwordMinLength": "Password must be at least 8 characters",
+      "invalidFileType": "Please select a valid image file",
+      "fileSizeLimit": "Image size must be less than 5MB",
+      "emailExists": "Email already exists. Please use a different email.",
+      "serviceUnavailable": "Registration service is temporarily unavailable.",
+      "usernameTaken": "Username is already taken.",
+      "generalError": "Something went wrong. Please try again."
+    }
+  },
+  "home": {
+    "title": "👻 Haunted ToDo List",
+    "subtitle": "Tasks that won't stay buried! Keep track of your spooky to-dos.",
+    "addTask": "Add Task 👻",
+    "addTaskPlaceholder": "Add a new haunting task...",
+    "noTasks": "No tasks haunting you right now!",
+    "noTasksSubtitle": "Add a task above to get started.",
+    "completedStats": "{{completed}} of {{total}} tasks completed",
+    "stillHaunting": "👻 {{remaining}} still haunting you!"
+  }
+}

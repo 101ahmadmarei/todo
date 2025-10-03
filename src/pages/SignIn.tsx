@@ -1,43 +1,137 @@
+import {Label} from "@/components/ui/label";
+import {Input} from "@/components/ui/input";
+import {Button} from "@/components/ui/button";
+import {Link, useNavigate} from "react-router-dom";
+import {Formik, Form, ErrorMessage} from 'formik';
+import * as Yup from 'yup';
+import {useState} from 'react';
+import {useTranslation} from '@/hooks/useTranslation';
+import {Loader2Icon} from "lucide-react";
+
+interface FormData {
+    email: string;
+    password: string;
+}
 
 export default function SignIn() {
+    const [generalError, setGeneralError] = useState<string>('');
+    const navigate = useNavigate();
+    const {t} = useTranslation();
+
+    const validationSchema = Yup.object({
+        email: Yup.string()
+            .email(t('signin.errors.emailInvalid'))
+            .required(t('signin.errors.emailRequired')),
+        password: Yup.string()
+            .min(6, t('signin.errors.passwordMinLength'))
+            .required(t('signin.errors.passwordRequired'))
+    });
+
+    const initialValues: FormData = {
+        email: '',
+        password: ''
+    };
+
+    const handleSubmit = async (values: FormData, {setSubmitting}: any) => {
+
+        await new Promise(resolve => setTimeout(resolve, 2000));
+
+        localStorage.setItem('user', JSON.stringify({
+            email: values.email,
+            signedInAt: new Date().toISOString()
+        }));
+
+        window.dispatchEvent(new Event('authChange'));
+
+        navigate('/');
+
+        setSubmitting(false);
+
+    };
+
     return (
-        <div className="flex h-screen">
-            {/* Left sidebar */}
-
-            {/* Right form section */}
-            <div className="flex flex-1 items-center justify-center bg-background">
-                <div className="max-w-md w-full p-8">
-                    <h1 className="text-2xl font-bold mb-2 text-center">Sign in</h1>
-                    <p className="text-subText text-center mb-6">
-                        Log in to unlock tailored content and stay connected with your community.
-                    </p>
-
-                    <form className="flex flex-col gap-4">
-                        <input
-                            type="email"
-                            placeholder="Email"
-                            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-                        />
-                        <input
-                            type="password"
-                            placeholder="Password"
-                            className="w-full border border-gray-300 rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-                        />
-                        <button
-                            type="submit"
-                            className="bg-primary text-white py-2 rounded font-semibold hover:bg-primary/90"
-                        >
-                            Sign in
-                        </button>
-                    </form>
-
-                    <p className="text-sm text-center mt-4">
-                        Don’t have an account?{" "}
-                        <a href="/signup" className="text-primary font-medium hover:underline">
-                            Sign up
-                        </a>
+        <div className="flex flex-1 items-center justify-center bg-background">
+            <div className="max-w-lg lg:max-w-md w-full px-4">
+                <div className="lg:px-4">
+                    <h1 className="text-2xl font-bold mb-2 text-center">{t('signin.title')}</h1>
+                    <p className="text-subText text-center mb-6 mx-3 leading-8">
+                        {t('signin.subtitle')}
                     </p>
                 </div>
+                <Formik
+                    initialValues={initialValues}
+                    validationSchema={validationSchema}
+                    onSubmit={handleSubmit}
+                >
+                    {({isSubmitting, errors, touched, values, handleChange, handleBlur}) => (
+                        <Form className="flex flex-col gap-4">
+                            {generalError && (
+                                <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-200 rounded-md">
+                                    {generalError}
+                                </div>
+                            )}
+
+                            <div className="grid w-full items-center gap-3">
+                                <Label htmlFor="email">{t('signin.email')}</Label>
+                                <Input
+                                    type="email"
+                                    id="email"
+                                    name="email"
+                                    placeholder={t('signin.emailPlaceholder')}
+                                    value={values.email}
+                                    onChange={(e) => {
+                                        handleChange(e);
+                                        if (generalError) setGeneralError('');
+                                    }}
+                                    onBlur={handleBlur}
+                                    className={errors.email && touched.email ? 'border-red-500 focus-visible:ring-red-500' : ''}
+                                    disabled={isSubmitting}
+
+                                />
+                                <ErrorMessage name="email" component="span" className="text-sm text-red-600"/>
+                            </div>
+
+                            <div className="grid w-full items-center gap-3">
+                                <Label htmlFor="password">{t('signin.password')}</Label>
+                                <Input
+                                    type="password"
+                                    id="password"
+                                    name="password"
+                                    placeholder={t('signin.passwordPlaceholder')}
+                                    value={values.password}
+                                    onChange={(e) => {
+                                        handleChange(e);
+                                        if (generalError) setGeneralError('');
+                                    }}
+                                    onBlur={handleBlur}
+                                    className={errors.password && touched.password ? 'border-red-500 focus-visible:ring-red-500' : ''}
+                                    disabled={isSubmitting}
+                                />
+                                <ErrorMessage name="password" component="span" className="text-sm text-red-600"/>
+                            </div>
+
+                            <Button
+                                type="submit"
+                                variant="default"
+                                disabled={isSubmitting}
+                                className="relative mt-3 text-white"
+                            >
+                                {isSubmitting && (
+                                    <Loader2Icon className="animate-spin"/>
+                                )}
+                                {t('signin.signInButton')}
+
+                            </Button>
+                        </Form>
+                    )}
+                </Formik>
+
+                <p className="text-sm text-center mt-4">
+                    {t('signin.noAccount')}{" "}
+                    <Button asChild variant="link" className="p-0 h-auto font-medium">
+                        <Link to="/signup">{t('signin.signUpLink')}</Link>
+                    </Button>
+                </p>
             </div>
         </div>
     );

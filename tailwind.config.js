@@ -4,6 +4,9 @@ module.exports = {
     content: ['./src/**/*.{html,js}'],
     theme: {
         extend: {
+            fontFamily: {
+                janna: ['"Janna LT"'],
+            },
             colors: {
                 primary: "rgba(var(--color-primary))",
                 background: "rgba(var(--color-background) / <alpha>)",
