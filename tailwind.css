@@ -1,0 +1,24 @@
+@import "tailwindcss";
+
+@tailwind utilities;
+
+@theme {
+    --color-primary: rgb(217 ,4 ,41);
+    --color-background: #ffffff;
+    --color-text: #1F0806 ;
+    --color-subText: #474747;
+    /* Light theme */
+    /*:root {*/
+    /*    --color-primary: 217 4 41; !* #D90429 *!*/
+    /*    --color-background: 255 255 255; !* #FFFFFF *!*/
+    /*    --color-text: 31 8 6; !* #1F0806 *!*/
+    /*    --color-subText: 71 71 71; !* #474747 *!*/
+    /*}*/
+    /*!* Dark theme *!*/
+    /*.dark {*/
+    /*    --color-primary: 255 92 92;*/
+    /*    --color-background: 15 15 15;*/
+    /*    --color-text: 245 245 245;*/
+    /*    --color-subText: 180 180 180;*/
+    /*}*/
+}
