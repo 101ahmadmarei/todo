@@ -185,13 +185,11 @@ export default function TaskTable({tasks}: TaskTableProps) {
 
                                                 <DropdownMenuItem
                                                     onClick={() => handleDeleteTask(task.id, task.title)}
-                                                    className="text-red-600 focus:text-red-600"
                                                 >
                                                     <Trash2 className="mr-2 h-4 w-4"/>
                                                     Delete Task
                                                 </DropdownMenuItem>
 
-                                                <DropdownMenuSeparator/>
 
                                                 <DropdownMenuItem
                                                     onClick={() => {
@@ -200,7 +198,6 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                                             handleDeleteStatus(taskStatus.id, taskStatus.title);
                                                         }
                                                     }}
-                                                    className="text-red-600 focus:text-red-600"
                                                 >
                                                     <Trash2 className="mr-2 h-4 w-4"/>
                                                     Delete Status
