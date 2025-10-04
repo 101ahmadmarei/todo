@@ -15,17 +15,26 @@ import {
 } from "@/components/ui/select";
 import {Button} from "@/components/ui/button";
 import {X} from "lucide-react";
-import {useTaskStore} from "@/store/taskStore";
+import {useTaskStore, type Task} from "@/store/taskStore";
 import {useStatusStore} from "@/store/statusStore";
 
 interface CreateTaskDialogProps {
     trigger?: React.ReactNode;
+    editMode?: boolean;
+    editTask?: Task;
+    onClose?: () => void;
 }
 
-export function CreateTaskDialog({trigger}: CreateTaskDialogProps) {
-    const [open, setOpen] = React.useState(false);
-    const addTask = useTaskStore((state) => state.addTask);
+export function CreateTaskDialog({trigger, editMode = false, editTask, onClose}: CreateTaskDialogProps) {
+    const [open, setOpen] = React.useState(editMode || false);
+    const {addTask, updateTask} = useTaskStore();
     const statuses = useStatusStore((state) => state.statuses);
+
+    React.useEffect(() => {
+        if (editMode) {
+            setOpen(true);
+        }
+    }, [editMode]);
 
     function onSubmit(e: React.FormEvent<HTMLFormElement>) {
         e.preventDefault();
@@ -35,40 +44,55 @@ export function CreateTaskDialog({trigger}: CreateTaskDialogProps) {
         const status = fd.get("status") as string;
 
         if (title.trim()) {
-            addTask({
-                title: title.trim(),
-                description: description || "",
-                status: status || "todo",
-            });
-            setOpen(false);
-            e.currentTarget.reset();
+            if (editMode && editTask) {
+                updateTask(editTask.id, {
+                    title: title.trim(),
+                    description: description || "",
+                    status: status || editTask.status,
+                });
+            } else {
+                addTask({
+                    title: title.trim(),
+                    description: description || "",
+                    status: status || (statuses.length > 0 ? statuses[0].id : "no-status"),
+                });
+            }
+            handleClose();
         }
     }
 
+    const handleClose = () => {
+        setOpen(false);
+        if (onClose) {
+            onClose();
+        }
+    };
+
     return (
-        <Dialog open={open} onOpenChange={setOpen}>
-            <DialogTrigger asChild>
-                {trigger || <Button>New Task</Button>}
-            </DialogTrigger>
+        <Dialog open={open} onOpenChange={editMode ? handleClose : setOpen}>
+            {trigger && (
+                <DialogTrigger asChild>
+                    {trigger}
+                </DialogTrigger>
+            )}
 
             <DialogContent className="sm:max-w-md p-0 overflow-hidden">
-                {/* Header */}
                 <div className="relative border-b px-6 py-4">
                     <DialogHeader className="m-0">
-                        <DialogTitle className="text-lg">Create Task</DialogTitle>
+                        <DialogTitle className="text-lg">
+                            {editMode ? "Edit Task" : "Create Task"}
+                        </DialogTitle>
                     </DialogHeader>
-
 
                 </div>
 
-                {/* Body */}
                 <form className="px-6 pb-6 pt-4 space-y-4" onSubmit={onSubmit}>
                     <div className="grid gap-2">
                         <Label htmlFor="title">Task title</Label>
                         <Input
                             id="title"
                             name="title"
-                            defaultValue="Kill the Boss"
+                            defaultValue={editMode && editTask ? editTask.title : "Kill the Boss"}
                             placeholder="Task title"
                             required
                         />
@@ -79,6 +103,7 @@ export function CreateTaskDialog({trigger}: CreateTaskDialogProps) {
                         <Textarea
                             id="description"
                             name="description"
+                            defaultValue={editMode && editTask ? editTask.description : ""}
                             placeholder="Type something ..."
                             className="min-h-[96px]"
                         />
@@ -86,7 +111,10 @@ export function CreateTaskDialog({trigger}: CreateTaskDialogProps) {
 
                     <div className="grid gap-2">
                         <Label>Status</Label>
-                        <Select defaultValue={statuses.length > 0 ? statuses[0].id : "no-status"} name="status">
+                        <Select
+                            defaultValue={editMode && editTask ? editTask.status : (statuses.length > 0 ? statuses[0].id : "no-status")}
+                            name="status"
+                        >
                             <SelectTrigger id="status">
                                 <SelectValue placeholder="Select Status"/>
                             </SelectTrigger>
@@ -119,9 +147,8 @@ export function CreateTaskDialog({trigger}: CreateTaskDialogProps) {
                         </Select>
                     </div>
 
-                    {/* Footer */}
                     <Button type="submit" className="w-full text-white" variant="destructive">
-                        Create
+                        {editMode ? "Update Task" : "Create"}
                     </Button>
                 </form>
             </DialogContent>

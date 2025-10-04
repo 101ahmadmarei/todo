@@ -8,12 +8,30 @@ import {
 } from "@/components/ui/table"
 import {Badge} from "@/components/ui/badge"
 import {Button} from "@/components/ui/button"
-import {useTaskStore} from "@/store/taskStore"
 import {useStatusStore} from "@/store/statusStore"
+import {useTaskStore} from "@/store/taskStore"
+import type {Task} from "@/store/taskStore"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuItem,
+    DropdownMenuTrigger,
+    DropdownMenuSeparator,
+} from "@/components/ui/dropdown-menu"
+import {MoreHorizontal, Edit, Trash2, ArrowRightLeft} from "lucide-react"
+import {CreateTaskDialog} from "@/components/CreateTaskDialog"
+import {DeleteTaskDialog} from "@/components/DeleteTaskDialog"
+import {useState} from "react"
 
-export default function TaskTable() {
-    const tasks = useTaskStore((state) => state.tasks);
+interface TaskTableProps {
+    tasks: Task[];
+}
+
+export default function TaskTable({tasks}: TaskTableProps) {
     const statuses = useStatusStore((state) => state.statuses);
+    const {updateTask, removeTask} = useTaskStore();
+    const [editingTask, setEditingTask] = useState<Task | null>(null);
+    const [deletingTask, setDeletingTask] = useState<{ id: string, title: string } | null>(null);
 
     const getStatusById = (statusId: string) => {
         return statuses.find(status => status.id === statusId);
@@ -32,6 +50,18 @@ export default function TaskTable() {
         return colorMap[color] || 'bg-gray-100 text-gray-700';
     };
 
+    const handleStatusChange = (taskId: string, newStatusId: string) => {
+        updateTask(taskId, {status: newStatusId});
+    };
+
+    const handleDeleteTask = (taskId: string, taskTitle: string) => {
+        setDeletingTask({id: taskId, title: taskTitle});
+    };
+
+    const handleEditTask = (task: Task) => {
+        setEditingTask(task);
+    };
+
     return (
         <div className="border rounded-lg">
             <Table>
@@ -39,22 +69,23 @@ export default function TaskTable() {
                     <TableRow>
                         <TableHead className="w-[50px]"></TableHead>
                         <TableHead>Title</TableHead>
-                        <TableHead>Description</TableHead>
-                        <TableHead>Status</TableHead>
-                        <TableHead className="text-right"></TableHead>
+                        <TableHead className="hidden md:table-cell">Description</TableHead>
+                        <TableHead className=" md:w-[120px]">Status</TableHead>
+                        <TableHead className="text-right w-[50px]"></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
                     {tasks.length === 0 ? (
                         <TableRow>
-                            <TableCell colSpan={5} className="text-center py-12">
+                            <TableCell colSpan={5} className="text-center py-12 md:table-cell">
                                 <div className="flex flex-col items-center gap-3">
                                     <span className="text-4xl">👻</span>
-                                    <p className="text-muted-foreground">No tasks created yet</p>
-                                    <p className="text-sm text-muted-foreground">Create your first task to get
-                                        started!</p>
+                                    <p className="text-muted-foreground">No tasks found</p>
+                                    <p className="text-sm text-muted-foreground">Try adjusting your filters or create a
+                                        new task!</p>
                                 </div>
                             </TableCell>
+                            <TableCell className="hidden md:table-cell"></TableCell>
                         </TableRow>
                     ) : (
                         tasks.map((task) => {
@@ -67,24 +98,121 @@ export default function TaskTable() {
                                     <TableCell className="font-medium text-left">
                                         {task.title}
                                     </TableCell>
-                                    <TableCell className="text-left">
-                                        {task.description || "No description"}
+                                    <TableCell className="text-left max-w-[200px] hidden md:table-cell">
+                                        <div className="truncate" title={task.description || "No description"}>
+                                            {task.description || "No description"}
+                                        </div>
                                     </TableCell>
                                     <TableCell className="text-left">
-                                        <Badge
-                                            variant="secondary"
-                                            className={taskStatus ? getStatusColor(taskStatus.color) : 'bg-gray-100 text-gray-700'}
-                                        >
-                                            {taskStatus ? taskStatus.title : 'Unknown'}
-                                        </Badge>
+                                        {/* Mobile: Show only color dot */}
+                                        <div className="md:hidden">
+                                            <div
+                                                className={`w-6 h-6 rounded-sm ${
+                                                    taskStatus?.color === 'red' ? 'bg-red-500' :
+                                                        taskStatus?.color === 'purple' ? 'bg-purple-500' :
+                                                            taskStatus?.color === 'blue-light' ? 'bg-blue-300' :
+                                                                taskStatus?.color === 'blue-dark' ? 'bg-blue-700' :
+                                                                    taskStatus?.color === 'green' ? 'bg-green-600' :
+                                                                        taskStatus?.color === 'stone' ? 'bg-stone-400' :
+                                                                            'bg-blue-500'
+                                                }`}
+                                                title={taskStatus ? taskStatus.title : 'Unknown'}
+                                            ></div>
+                                        </div>
+
+                                        {/* Desktop: Show badge with text */}
+                                        <div className="hidden md:block">
+                                            <Badge
+                                                variant="secondary"
+                                                className={`w-24 h-10 flex justify-center items-center ${taskStatus ? getStatusColor(taskStatus.color) : 'bg-gray-100 text-gray-700'}`}
+                                            >
+                                                {taskStatus ? taskStatus.title : 'Unknown'}
+                                            </Badge>
+                                        </div>
                                     </TableCell>
-                                    <TableCell className="text-right">⋮</TableCell>
+                                    <TableCell className="text-right">
+                                        <DropdownMenu>
+                                            <DropdownMenuTrigger asChild>
+                                                <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
+                                                    <MoreHorizontal className="h-4 w-4"/>
+                                                </Button>
+                                            </DropdownMenuTrigger>
+                                            <DropdownMenuContent align="end">
+                                                {/* Header for status options */}
+                                                <div
+                                                    className="px-2 py-1.5 text-sm font-medium text-muted-foreground flex items-center gap-2">
+                                                    <ArrowRightLeft className="h-4 w-4"/>
+                                                    Change to
+                                                </div>
+
+                                                {/* Status Options */}
+                                                {statuses.map((status) => (
+                                                    <DropdownMenuItem
+                                                        key={status.id}
+                                                        onClick={() => handleStatusChange(task.id, status.id)}
+                                                        className={task.status === status.id ? 'bg-accent' : ''}
+                                                    >
+                                                        <div className="flex items-center gap-2">
+                                                            <div className={`w-3 h-3 rounded-full ${
+                                                                status.color === 'red' ? 'bg-red-500' :
+                                                                    status.color === 'purple' ? 'bg-purple-500' :
+                                                                        status.color === 'blue-light' ? 'bg-blue-300' :
+                                                                            status.color === 'blue-dark' ? 'bg-blue-700' :
+                                                                                status.color === 'green' ? 'bg-green-600' :
+                                                                                    status.color === 'stone' ? 'bg-stone-400' :
+                                                                                        'bg-blue-500'
+                                                            }`}></div>
+                                                            {status.title}
+                                                            {task.status === status.id &&
+                                                                <span className="ml-auto">✓</span>}
+                                                        </div>
+                                                    </DropdownMenuItem>
+                                                ))}
+
+                                                <DropdownMenuSeparator/>
+
+                                                <DropdownMenuItem onClick={() => handleEditTask(task)}>
+                                                    <Edit className="mr-2 h-4 w-4"/>
+                                                    Edit Task
+                                                </DropdownMenuItem>
+
+                                                <DropdownMenuItem
+                                                    onClick={() => handleDeleteTask(task.id, task.title)}
+                                                    className="text-red-600 focus:text-red-600"
+                                                >
+                                                    <Trash2 className="mr-2 h-4 w-4"/>
+                                                    Delete Task
+                                                </DropdownMenuItem>
+                                            </DropdownMenuContent>
+                                        </DropdownMenu>
+                                    </TableCell>
                                 </TableRow>
                             );
                         })
                     )}
                 </TableBody>
             </Table>
+
+            {/* Edit Task Dialog */}
+            {editingTask && (
+                <CreateTaskDialog
+                    trigger={null}
+                    editMode={true}
+                    editTask={editingTask}
+                    onClose={() => setEditingTask(null)}
+                />
+            )}
+
+            {deletingTask && (
+                <DeleteTaskDialog
+                    taskId={deletingTask.id}
+                    taskTitle={deletingTask.title}
+                    open={!!deletingTask}
+                    onOpenChange={(open) => {
+                        if (!open) setDeletingTask(null);
+                    }}
+                />
+            )}
 
             {tasks.length > 0 && (
                 <div className="flex justify-between items-center p-4">

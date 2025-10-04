@@ -5,10 +5,44 @@ import Navbar from "@/components/Navbar.tsx";
 import {CreateStatusDialog} from "@/components/CreateStatusDialog.tsx";
 import {useStatusStore} from "@/store/statusStore";
 import {CreateTaskDialog} from "@/components/CreateTaskDialog.tsx";
+import {useTaskStore} from "@/store/taskStore";
+import {useState, useMemo} from "react";
 
 export default function Home() {
     const statuses = useStatusStore((state) => state.statuses);
+    const tasks = useTaskStore((state) => state.tasks);
     const hasStatuses = statuses.length > 0;
+
+    const [selectedStatus, setSelectedStatus] = useState<string>("status");
+    const [searchTerm, setSearchTerm] = useState<string>("");
+
+    const filteredTasks = useMemo(() => {
+        let filtered = tasks;
+
+        // Filter by status
+        if (selectedStatus !== "status" && selectedStatus !== "all") {
+            filtered = filtered.filter(task => task.status === selectedStatus);
+        }
+
+        // Filter by search term
+        if (searchTerm.trim()) {
+            const searchLower = searchTerm.toLowerCase();
+            filtered = filtered.filter(task =>
+                task.title.toLowerCase().includes(searchLower) ||
+                task.description.toLowerCase().includes(searchLower)
+            );
+        }
+
+        return filtered;
+    }, [tasks, selectedStatus, searchTerm]);
+
+    const handleStatusChange = (statusId: string) => {
+        setSelectedStatus(statusId);
+    };
+
+    const handleSearchChange = (searchTerm: string) => {
+        setSearchTerm(searchTerm);
+    };
 
     return (
         <div>
@@ -35,18 +69,20 @@ export default function Home() {
             ) : (
                 <div className="container px-3 mx-auto flex flex-1 items-center justify-center bg-background">
                     <div className="w-full mt-8 space-y-6">
-                        <div className="flex justify-between items-center">
-                            <h1 className="text-2xl font-bold">Your Statuses</h1>
+                        <div className="flex justify-end items-center">
                             <CreateTaskDialog
                                 trigger={
-                                    <Button className="bg-primary hover:bg-primary/90 text-white">
+                                    <Button className="bg-primary hover:bg-primary/90 text-white w-full md:w-auto">
                                         Create New Task
                                     </Button>
                                 }
                             />
                         </div>
-                        <TaskTableHeader/>
-                        <TaskTable/>
+                        <TaskTableHeader
+                            onStatusChange={handleStatusChange}
+                            onSearchChange={handleSearchChange}
+                        />
+                        <TaskTable tasks={filteredTasks}/>
                     </div>
                 </div>
             )}
