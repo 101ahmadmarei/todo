@@ -23,6 +23,7 @@ import {
 import {Button} from "@/components/ui/button";
 import {useTaskStore, type Task} from "@/store/taskStore";
 import {useStatusStore} from "@/store/statusStore";
+import {useTranslation} from "@/hooks/useTranslation";
 
 interface CreateTaskDialogProps {
     trigger?: React.ReactNode;
@@ -53,6 +54,7 @@ export function CreateTaskDialog({trigger, editMode = false, editTask, onClose}:
     const {addTask, updateTask} = useTaskStore();
     const statuses = useStatusStore((state) => state.statuses);
     const isMobile = useIsMobile();
+    const {t} = useTranslation();
 
     React.useEffect(() => {
         if (editMode) {
@@ -96,36 +98,36 @@ export function CreateTaskDialog({trigger, editMode = false, editTask, onClose}:
     const FormContent = () => (
         <form className=" md:px-6 md:pb-6 pt-4 space-y-4" onSubmit={onSubmit}>
             <div className="grid gap-2">
-                <Label htmlFor="title">Task title</Label>
+                <Label htmlFor="title">{t('dialogs.createTask.taskTitle')}</Label>
                 <Input
                     id="title"
                     name="title"
                     defaultValue={editMode && editTask ? editTask.title : ""}
-                    placeholder={editMode ? "Edit task title..." : "Enter task title..."}
+                    placeholder={editMode ? t('dialogs.createTask.editTaskTitlePlaceholder') : t('dialogs.createTask.taskTitlePlaceholder')}
                     required
                 />
             </div>
 
             <div className="grid gap-2">
-                <Label htmlFor="description">Description</Label>
+                <Label htmlFor="description">{t('dialogs.createTask.description')}</Label>
                 <Textarea
                     id="description"
                     name="description"
                     defaultValue={editMode && editTask ? editTask.description : ""}
-                    placeholder="Type something ..."
+                    placeholder={t('dialogs.createTask.descriptionPlaceholder')}
                     className="min-h-[160px]"
                 />
             </div>
 
             <div className="grid gap-2">
-                <Label>Status</Label>
+                <Label>{t('dialogs.createTask.status')}</Label>
                 <Select
                     defaultValue={editMode && editTask ? editTask.status : undefined}
                     name="status"
                     required
                 >
                     <SelectTrigger id="status">
-                        <SelectValue placeholder="Select Status"/>
+                        <SelectValue placeholder={t('dialogs.createTask.statusPlaceholder')}/>
                     </SelectTrigger>
                     <SelectContent>
                         {statuses.length > 0 ? (
@@ -148,7 +150,7 @@ export function CreateTaskDialog({trigger, editMode = false, editTask, onClose}:
                             <SelectItem value="no-status" disabled>
                                 <div className="flex items-center gap-2 text-muted-foreground">
                                     <div className="w-3 h-3 rounded-full bg-gray-300"></div>
-                                    No statuses available - Create one first
+                                    {t('dialogs.createStatus.noStatusesAvailable')}
                                 </div>
                             </SelectItem>
                         )}
@@ -157,7 +159,7 @@ export function CreateTaskDialog({trigger, editMode = false, editTask, onClose}:
             </div>
 
             <Button type="submit" className="w-full text-white">
-                {editMode ? "Update Task" : "Create"}
+                {editMode ? t('dialogs.createTask.updateButton') : t('dialogs.createTask.createButton')}
             </Button>
         </form>
     );
@@ -175,7 +177,7 @@ export function CreateTaskDialog({trigger, editMode = false, editTask, onClose}:
                     <div className="relative px-6 py-4">
                         <SheetHeader className="m-0">
                             <SheetTitle className="text-lg">
-                                {editMode ? "Edit Task" : "Create Task"}
+                                {editMode ? t('dialogs.createTask.editTitle') : t('dialogs.createTask.title')}
                             </SheetTitle>
                         </SheetHeader>
                     </div>
@@ -197,7 +199,7 @@ export function CreateTaskDialog({trigger, editMode = false, editTask, onClose}:
                 <div className="relative  px-6 py-4">
                     <DialogHeader className="m-0">
                         <DialogTitle className="text-lg">
-                            {editMode ? "Edit Task" : "Create Task"}
+                            {editMode ? t('dialogs.createTask.editTitle') : t('dialogs.createTask.title')}
                         </DialogTitle>
                     </DialogHeader>
                 </div>

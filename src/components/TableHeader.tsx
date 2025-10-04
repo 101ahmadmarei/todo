@@ -12,6 +12,7 @@ import {CreateStatusDialog} from "@/components/CreateStatusDialog.tsx"
 import {DeleteStatusDialog} from "@/components/DeleteStatusDialog.tsx"
 import {CircleFadingPlus, Search} from "lucide-react"
 import {useState} from "react"
+import {useTranslation} from "@/hooks/useTranslation"
 
 interface TaskTableHeaderProps {
     onStatusChange?: (statusId: string) => void
@@ -28,6 +29,7 @@ export default function TaskTableHeader({
         id: string
         title: string
     } | null>(null)
+    const {t} = useTranslation()
 
     const handleStatusChange = (value: string) => {
         onStatusChange?.(value)
@@ -70,7 +72,7 @@ export default function TaskTableHeader({
                         className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4"/>
                     <Input
                         type="search"
-                        placeholder="Search..."
+                        placeholder={t('header.searchPlaceholder')}
                         className="pl-10 flex-1"
                         onChange={handleSearchChange}
                     />
@@ -80,11 +82,11 @@ export default function TaskTableHeader({
                 <Select defaultValue="status" onValueChange={handleStatusChange}>
                     <SelectTrigger className="w-full md:w-[180px]">
                         {/* ✅ Only show selected status name */}
-                        <SelectValue placeholder="Status"/>
+                        <SelectValue placeholder={t('header.statusPlaceholder')}/>
                     </SelectTrigger>
 
                     <SelectContent>
-                        <SelectItem value="status">Status</SelectItem>
+                        <SelectItem value="status">{t('table.status')}</SelectItem>
                         {statuses.map((status) => {
                             const taskCount = getTaskCountForStatus(status.id)
                             return (
@@ -113,7 +115,7 @@ export default function TaskTableHeader({
                                     className="relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 text-sm outline-none hover:bg-accent hover:text-accent-foreground">
                                     <div className="flex items-center gap-2">
                                         <CircleFadingPlus className="w-4 h-4"/>
-                                        Create Status
+                                        {t('header.createStatus')}
                                     </div>
                                 </div>
                             }

@@ -16,6 +16,7 @@ import {
 import {Button} from "@/components/ui/button";
 import {useStatusStore} from "@/store/statusStore";
 import {useTaskStore} from "@/store/taskStore";
+import {useTranslation} from "@/hooks/useTranslation";
 
 interface DeleteStatusDialogProps {
     statusId: string;
@@ -50,6 +51,7 @@ export function DeleteStatusDialog({
     const removeStatus = useStatusStore((state) => state.removeStatus);
     const {tasks, removeTask} = useTaskStore();
     const isMobile = useIsMobile();
+    const {t} = useTranslation();
 
     const handleDelete = () => {
         // Find all tasks with this status and delete them
@@ -67,13 +69,13 @@ export function DeleteStatusDialog({
         <div className="md:px-6 md:pb-6   space-y-6 text-center">
             <div className="space-y-2">
                 <h3 className="text-lg mb-3 font-semibold">
-                    Beware! You're About to Erase the<br/>
-                    "{statusTitle}" Status! 👻
+                    {t('dialogs.deleteStatus.warningTitle')}<br/>
+                    "{statusTitle}" {t('dialogs.deleteStatus.warningTitle2')}
                 </h3>
 
                 <div className="space-y-1 text-sm text-muted-foreground">
-                    <p>All tasks in this status will vanish into the void forever...</p>
-                    <p>Once they're gone, there's no bringing them back!</p>
+                    <p>{t('dialogs.deleteStatus.warningMessage')}</p>
+                    <p>{t('dialogs.deleteStatus.warningMessage2')}</p>
                 </div>
             </div>
 
@@ -81,7 +83,7 @@ export function DeleteStatusDialog({
                 onClick={handleDelete}
                 className="text-white w-full"
             >
-                Delete the Status
+                {t('dialogs.deleteStatus.deleteButton')}
             </Button>
         </div>
     );
@@ -92,7 +94,7 @@ export function DeleteStatusDialog({
                 <SheetContent side="bottom" className="h-auto">
                     <div className="relative">
                         <SheetHeader>
-                            <SheetTitle>Delete Status</SheetTitle>
+                            <SheetTitle>{t('dialogs.deleteStatus.title')}</SheetTitle>
                         </SheetHeader>
                     </div>
                     <ContentBody/>
@@ -106,7 +108,7 @@ export function DeleteStatusDialog({
             <DialogContent className="sm:max-w-md p-0 overflow-hidden">
                 <div className="relative px-6 py-4">
                     <DialogHeader className="m-0">
-                        <DialogTitle>Delete Status</DialogTitle>
+                        <DialogTitle>{t('dialogs.deleteStatus.title')}</DialogTitle>
                     </DialogHeader>
                 </div>
                 <ContentBody/>

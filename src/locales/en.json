@@ -1,6 +1,65 @@
 {
   "authSidebar": {
-    "message": "The Haunted ToDo List Tasks That Won’t Stay Buried!"
+    "message": "The Haunted ToDo List Tasks That Won't Stay Buried!"
+  },
+  "dialogs": {
+    "createTask": {
+      "title": "Create Task",
+      "editTitle": "Edit Task",
+      "taskTitle": "Task title",
+      "taskTitlePlaceholder": "Enter task title...",
+      "editTaskTitlePlaceholder": "Edit task title...",
+      "description": "Description",
+      "descriptionPlaceholder": "Type something ...",
+      "status": "Status",
+      "statusPlaceholder": "Select Status",
+      "createButton": "Create",
+      "updateButton": "Update Task"
+    },
+    "createStatus": {
+      "title": "Create Status",
+      "statusTitle": "Status title",
+      "statusTitlePlaceholder": "Enter status name...",
+      "selectColor": "Select Color",
+      "createButton": "Create",
+      "noStatusesAvailable": "No statuses available - Create one first"
+    },
+    "deleteTask": {
+      "title": "Delete Task",
+      "warningTitle": "Beware! You're About to Erase the",
+      "warningTitle2": "Task!",
+      "warningMessage": "This task will vanish into the void forever...",
+      "warningMessage2": "Once it's gone, there's no bringing it back!",
+      "deleteButton": "Delete the Task"
+    },
+    "deleteStatus": {
+      "title": "Delete Status",
+      "warningTitle": "Beware! You're About to Erase the",
+      "warningTitle2": "Status! 👻",
+      "warningMessage": "All tasks in this status will vanish into the void forever...",
+      "warningMessage2": "Once they're gone, there's no bringing them back!",
+      "deleteButton": "Delete the Status"
+    }
+  },
+  "table": {
+    "title": "Title",
+    "description": "Description",
+    "status": "Status",
+    "noTasksFound": "No tasks found",
+    "noTasksMessage": "Try adjusting your filters or create a new task!",
+    "noDescription": "No description",
+    "changeTo": "Change to",
+    "edit": "Edit",
+    "deleteTask": "Delete Task",
+    "deleteStatus": "Delete Status",
+    "previous": "← Previous",
+    "next": "Next →",
+    "of": "of"
+  },
+  "header": {
+    "searchPlaceholder": "Search...",
+    "statusPlaceholder": "Select status",
+    "createStatus": "Create Status"
   },
   "signin": {
     "title": "Sign in",
@@ -61,6 +120,11 @@
     "noTasks": "No tasks haunting you right now!",
     "noTasksSubtitle": "Add a task above to get started.",
     "completedStats": "{{completed}} of {{total}} tasks completed",
-    "stillHaunting": "👻 {{remaining}} still haunting you!"
+    "stillHaunting": "👻 {{remaining}} still haunting you!",
+    "emptyStatusTitle": "Uh-oh... It's Empty in Here!",
+    "emptyStatusMessage": "Looks like all your statuses have vanished into the abyss!",
+    "emptyStatusMessage2": "Create a new one before the ghosts take over...",
+    "createNewStatus": "Create New Status",
+    "createNewTask": "Create New Task"
   }
 }

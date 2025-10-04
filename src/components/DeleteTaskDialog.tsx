@@ -15,6 +15,7 @@ import {
 } from "@/components/ui/sheet";
 import {Button} from "@/components/ui/button";
 import {useTaskStore} from "@/store/taskStore";
+import {useTranslation} from "@/hooks/useTranslation";
 
 interface DeleteTaskDialogProps {
     taskId: string;
@@ -48,6 +49,7 @@ export function DeleteTaskDialog({
                                  }: DeleteTaskDialogProps) {
     const removeTask = useTaskStore((state) => state.removeTask);
     const isMobile = useIsMobile();
+    const {t} = useTranslation();
 
     const handleDelete = () => {
         removeTask(taskId);
@@ -58,13 +60,13 @@ export function DeleteTaskDialog({
         <div className="md:px-6 md:pb-6 space-y-6 text-center">
             <div className="space-y-2">
                 <h3 className="text-lg font-semibold ">
-                    Beware! You're About to Erase the<br/>
-                    "{taskTitle}" Task!
+                    {t('dialogs.deleteTask.warningTitle')}<br/>
+                    "{taskTitle}" {t('dialogs.deleteTask.warningTitle2')}
                 </h3>
 
                 <div className="space-y-1 text-sm text-muted-foreground">
-                    <p>This task will vanish into the void forever...</p>
-                    <p>Once it's gone, there's no bringing it back!</p>
+                    <p>{t('dialogs.deleteTask.warningMessage')}</p>
+                    <p>{t('dialogs.deleteTask.warningMessage2')}</p>
                 </div>
             </div>
 
@@ -72,7 +74,7 @@ export function DeleteTaskDialog({
                 onClick={handleDelete}
                 className="w-full text-white"
             >
-                Delete the Task
+                {t('dialogs.deleteTask.deleteButton')}
             </Button>
         </div>
     );
@@ -83,7 +85,7 @@ export function DeleteTaskDialog({
                 <SheetContent side="bottom" className="h-auto">
                     <div className="relative px-6 py-4">
                         <SheetHeader className="m-0">
-                            <SheetTitle>Delete Task</SheetTitle>
+                            <SheetTitle>{t('dialogs.deleteTask.title')}</SheetTitle>
                         </SheetHeader>
                     </div>
                     <ContentBody/>
@@ -97,7 +99,7 @@ export function DeleteTaskDialog({
             <DialogContent className="sm:max-w-md p-0 overflow-hidden">
                 <div className="relative px-6 py-4">
                     <DialogHeader className="m-0">
-                        <DialogTitle>Delete Task</DialogTitle>
+                        <DialogTitle>{t('dialogs.deleteTask.title')}</DialogTitle>
                     </DialogHeader>
                 </div>
                 <ContentBody/>

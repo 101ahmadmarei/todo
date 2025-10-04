@@ -19,6 +19,7 @@ import {Button} from "@/components/ui/button";
 import {cn} from "@/lib/utils";
 import {useStatusStore} from "@/store/statusStore";
 import {X} from "lucide-react";
+import {useTranslation} from "@/hooks/useTranslation";
 
 const colors = [
     {value: "red", class: "bg-red-500"},
@@ -73,6 +74,7 @@ export function CreateStatusDialog({trigger}: CreateStatusDialogProps) {
     const [inputValue, setInputValue] = React.useState("");
     const addStatus = useStatusStore((state) => state.addStatus);
     const isMobile = useIsMobile();
+    const {t} = useTranslation();
 
     // Reset form when dialog closes
     const handleOpenChange = React.useCallback((newOpen: boolean) => {
@@ -110,11 +112,11 @@ export function CreateStatusDialog({trigger}: CreateStatusDialogProps) {
         <div className="px-6 pb-6 space-y-4">
             <form onSubmit={onSubmit} className="space-y-4">
                 <div className="grid gap-2">
-                    <Label htmlFor="title">Status title</Label>
+                    <Label htmlFor="title">{t('dialogs.createStatus.statusTitle')}</Label>
                     <Input
                         id="title"
                         name="title"
-                        placeholder="Enter status name..."
+                        placeholder={t('dialogs.createStatus.statusTitlePlaceholder')}
                         value={inputValue}
                         onChange={handleInputChange}
                         required
@@ -123,7 +125,7 @@ export function CreateStatusDialog({trigger}: CreateStatusDialogProps) {
                 </div>
 
                 <div className="grid gap-2 my-3">
-                    <Label>Select Color</Label>
+                    <Label>{t('dialogs.createStatus.selectColor')}</Label>
                     <div className="flex flex-wrap justify-between gap-3">
                         {colors.map((c) => (
                             <div
@@ -148,11 +150,11 @@ export function CreateStatusDialog({trigger}: CreateStatusDialogProps) {
                 </div>
 
                 <Button type="submit" className="w-full text-white mt-3">
-                    Create
+                    {t('dialogs.createStatus.createButton')}
                 </Button>
             </form>
         </div>
-    ), [inputValue, selectedColor, onSubmit, handleInputChange, handleColorSelect]);
+    ), [inputValue, selectedColor, onSubmit, handleInputChange, handleColorSelect, t]);
 
     if (isMobile) {
         return (
@@ -164,7 +166,7 @@ export function CreateStatusDialog({trigger}: CreateStatusDialogProps) {
                 <SheetContent side="bottom" className="h-auto">
                     <div className="relative px-6 py-4">
                         <div className="flex justify-between items-center">
-                            <SheetTitle className="text-lg">Create Status</SheetTitle>
+                            <SheetTitle className="text-lg">{t('dialogs.createStatus.title')}</SheetTitle>
                             <Button variant="ghost" size="sm" onClick={() => setOpen(false)}>
                                 <X className="h-4 w-4"/>
                             </Button>
@@ -185,7 +187,7 @@ export function CreateStatusDialog({trigger}: CreateStatusDialogProps) {
             <DialogContent className="sm:max-w-sm p-0 overflow-hidden">
                 <div className="relative px-6 py-4">
                     <DialogHeader className="m-0">
-                        <DialogTitle className="text-lg">Create Status</DialogTitle>
+                        <DialogTitle className="text-lg">{t('dialogs.createStatus.title')}</DialogTitle>
                     </DialogHeader>
                 </div>
                 {FormContent}

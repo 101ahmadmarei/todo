@@ -7,11 +7,13 @@ import {useStatusStore} from "@/store/statusStore";
 import {CreateTaskDialog} from "@/components/CreateTaskDialog.tsx";
 import {useTaskStore} from "@/store/taskStore";
 import {useState, useMemo} from "react";
+import {useTranslation} from "@/hooks/useTranslation";
 
 export default function Home() {
     const statuses = useStatusStore((state) => state.statuses);
     const tasks = useTaskStore((state) => state.tasks);
     const hasStatuses = statuses.length > 0;
+    const {t} = useTranslation();
 
     const [selectedStatus, setSelectedStatus] = useState<string>("status");
     const [searchTerm, setSearchTerm] = useState<string>("");
@@ -52,16 +54,16 @@ export default function Home() {
                 <div className="w-full h-[80vh] flex flex-col items-center justify-center text-center px-3 gap-4">
                     <img src="/src/assets/ghost-3.png" alt="Ghost"/>
                     <p className="text-xl mt-4 font-bold">
-                        Uh-oh... It's Empty in Here!
+                        {t('home.emptyStatusTitle')}
                     </p>
                     <p className="text-subtext leading-2xl">
-                        Looks like all your statuses have vanished into the abyss! <br/>
-                        Create a new one before the ghosts take over...
+                        {t('home.emptyStatusMessage')} <br/>
+                        {t('home.emptyStatusMessage2')}
                     </p>
                     <CreateStatusDialog
                         trigger={
                             <Button className="bg-primary hover:bg-primary/90 text-white px-6 py-2">
-                                Create New Status
+                                {t('home.createNewStatus')}
                             </Button>
                         }
                     />
@@ -73,7 +75,7 @@ export default function Home() {
                             <CreateTaskDialog
                                 trigger={
                                     <Button className="bg-primary hover:bg-primary/90 text-white w-full md:w-auto">
-                                        Create New Task
+                                        {t('home.createNewTask')}
                                     </Button>
                                 }
                             />

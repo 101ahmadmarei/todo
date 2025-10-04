@@ -23,6 +23,7 @@ import {CreateTaskDialog} from "@/components/CreateTaskDialog"
 import {DeleteTaskDialog} from "@/components/DeleteTaskDialog"
 import {DeleteStatusDialog} from "@/components/DeleteStatusDialog"
 import {useState} from "react"
+import {useTranslation} from "@/hooks/useTranslation"
 
 interface TaskTableProps {
     tasks: Task[];
@@ -37,6 +38,7 @@ export default function TaskTable({tasks}: TaskTableProps) {
     const [deletingTask, setDeletingTask] = useState<{ id: string, title: string } | null>(null);
     const [deletingStatus, setDeletingStatus] = useState<{ id: string, title: string } | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
+    const {t} = useTranslation();
 
     // Pagination calculations
     const totalPages = Math.ceil(tasks.length / ITEMS_PER_PAGE);
@@ -98,9 +100,9 @@ export default function TaskTable({tasks}: TaskTableProps) {
                 <TableHeader>
                     <TableRow>
                         <TableHead className="w-[50px]"></TableHead>
-                        <TableHead>Title</TableHead>
-                        <TableHead className="hidden md:table-cell">Description</TableHead>
-                        <TableHead className=" md:w-[120px]">Status</TableHead>
+                        <TableHead>{t('table.title')}</TableHead>
+                        <TableHead className="hidden md:table-cell">{t('table.description')}</TableHead>
+                        <TableHead className=" md:w-[120px]">{t('table.status')}</TableHead>
                         <TableHead className="text-right w-[50px]"></TableHead>
                     </TableRow>
                 </TableHeader>
@@ -110,10 +112,8 @@ export default function TaskTable({tasks}: TaskTableProps) {
                             <TableCell colSpan={5} className="text-center py-12 md:table-cell">
                                 <div className="flex flex-col items-center gap-3">
                                     <span className="text-4xl">👻</span>
-                                    <p className="text-muted-foreground text-text">No tasks found</p>
-                                    <p className="text-sm text-muted-foreground text-text">Try adjusting your filters or
-                                        create a
-                                        new task!</p>
+                                    <p className="text-muted-foreground text-text">{t('table.noTasksFound')}</p>
+                                    <p className="text-sm text-muted-foreground text-text">{t('table.noTasksMessage')}</p>
                                 </div>
                             </TableCell>
                             <TableCell className="hidden md:table-cell"></TableCell>
@@ -144,8 +144,8 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                     </TableCell>
                                     <TableCell className="text-left max-w-[200px] hidden md:table-cell">
                                         <div className="truncate text-text"
-                                             title={task.description || "No description"}>
-                                            {task.description || "No description"}
+                                             title={task.description || t('table.noDescription')}>
+                                            {task.description || t('table.noDescription')}
                                         </div>
                                     </TableCell>
                                     <TableCell className="text-left">
@@ -187,7 +187,7 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                                 <div
                                                     className="px-2 py-1.5 text-sm font-medium text-muted-foreground flex items-center gap-2 text-text">
                                                     <ArrowRightLeft className="h-4 w-4"/>
-                                                    Change to
+                                                    {t('table.changeTo')}
                                                 </div>
 
                                                 {/* Status Options */}
@@ -220,7 +220,7 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                                 <DropdownMenuItem onClick={() => handleEditTask(task)}
                                                                   className="text-text">
                                                     <Edit className="mr-2 h-4 w-4"/>
-                                                    Edit
+                                                    {t('table.edit')}
                                                 </DropdownMenuItem>
 
                                                 <DropdownMenuItem
@@ -228,7 +228,7 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                                     className="text-text"
                                                 >
                                                     <Trash className="mr-2 h-4 w-4"/>
-                                                    Delete Task
+                                                    {t('table.deleteTask')}
                                                 </DropdownMenuItem>
 
                                                 <DropdownMenuItem
@@ -241,7 +241,7 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                                     className="text-text"
                                                 >
                                                     <Trash className="mr-2 h-4 w-4"/>
-                                                    Delete Status
+                                                    {t('table.deleteStatus')}
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
@@ -294,10 +294,10 @@ export default function TaskTable({tasks}: TaskTableProps) {
                         onClick={handlePreviousPage}
                         disabled={currentPage === 1}
                     >
-                        ← Previous
+                        {t('table.previous')}
                     </Button>
                     <span className="text-sm text-muted-foreground text-text">
-            {startItem}-{endItem} of {totalItems}
+            {startItem}-{endItem} {t('table.of')} {totalItems}
           </span>
                     <Button
                         variant="outline"
@@ -306,7 +306,7 @@ export default function TaskTable({tasks}: TaskTableProps) {
                         onClick={handleNextPage}
                         disabled={currentPage === totalPages}
                     >
-                        Next →
+                        {t('table.next')}
                     </Button>
                 </div>
             )}
