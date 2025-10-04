@@ -67,18 +67,19 @@ export function CreateTaskDialog({trigger, editMode = false, editTask, onClose}:
         const description = fd.get("description") as string;
         const status = fd.get("status") as string;
 
-        if (title.trim()) {
+        if (title.trim() && status) {
             if (editMode && editTask) {
                 updateTask(editTask.id, {
                     title: title.trim(),
                     description: description || "",
-                    status: status || editTask.status,
+                    status: status,
                 });
             } else {
                 addTask({
                     title: title.trim(),
                     description: description || "",
-                    status: status || (statuses.length > 0 ? statuses[0].id : "no-status"),
+                    status: status,
+                    starred: false,
                 });
             }
             handleClose();
@@ -119,8 +120,9 @@ export function CreateTaskDialog({trigger, editMode = false, editTask, onClose}:
             <div className="grid gap-2">
                 <Label>Status</Label>
                 <Select
-                    defaultValue={editMode && editTask ? editTask.status : ""}
+                    defaultValue={editMode && editTask ? editTask.status : undefined}
                     name="status"
+                    required
                 >
                     <SelectTrigger id="status">
                         <SelectValue placeholder="Select Status"/>

@@ -18,7 +18,7 @@ import {
     DropdownMenuTrigger,
     DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
-import {MoreHorizontal, Edit, Trash, ArrowRightLeft} from "lucide-react"
+import {MoreHorizontal, Edit, Trash, ArrowRightLeft, Star} from "lucide-react"
 import {CreateTaskDialog} from "@/components/CreateTaskDialog"
 import {DeleteTaskDialog} from "@/components/DeleteTaskDialog"
 import {DeleteStatusDialog} from "@/components/DeleteStatusDialog"
@@ -28,12 +28,36 @@ interface TaskTableProps {
     tasks: Task[];
 }
 
+const ITEMS_PER_PAGE = 8;
+
 export default function TaskTable({tasks}: TaskTableProps) {
     const statuses = useStatusStore((state) => state.statuses);
     const {updateTask} = useTaskStore();
     const [editingTask, setEditingTask] = useState<Task | null>(null);
     const [deletingTask, setDeletingTask] = useState<{ id: string, title: string } | null>(null);
     const [deletingStatus, setDeletingStatus] = useState<{ id: string, title: string } | null>(null);
+    const [currentPage, setCurrentPage] = useState(1);
+
+    // Pagination calculations
+    const totalPages = Math.ceil(tasks.length / ITEMS_PER_PAGE);
+    const startIndex = (currentPage - 1) * ITEMS_PER_PAGE;
+    const endIndex = startIndex + ITEMS_PER_PAGE;
+    const currentTasks = tasks.slice(startIndex, endIndex);
+    const totalItems = tasks.length;
+    const startItem = totalItems === 0 ? 0 : startIndex + 1;
+    const endItem = Math.min(endIndex, totalItems);
+
+    const handlePreviousPage = () => {
+        setCurrentPage(prev => Math.max(1, prev - 1));
+    };
+
+    const handleNextPage = () => {
+        setCurrentPage(prev => Math.min(totalPages, prev + 1));
+    };
+
+    const handleStarClick = (taskId: string, currentStarred: boolean) => {
+        updateTask(taskId, {starred: !currentStarred});
+    };
 
     const getStatusById = (statusId: string) => {
         return statuses.find(status => status.id === statusId);
@@ -95,12 +119,25 @@ export default function TaskTable({tasks}: TaskTableProps) {
                             <TableCell className="hidden md:table-cell"></TableCell>
                         </TableRow>
                     ) : (
-                        tasks.map((task) => {
+                        currentTasks.map((task) => {
                             const taskStatus = getStatusById(task.status);
                             return (
                                 <TableRow key={task.id}>
                                     <TableCell className="text-left">
-                                        <span className="text-primary">★</span>
+                                        <Button
+                                            variant="ghost"
+                                            size="sm"
+                                            className="h-8 w-8 p-0 hover:bg-transparent"
+                                            onClick={() => handleStarClick(task.id, task.starred || false)}
+                                        >
+                                            <Star
+                                                className={`h-4 w-4 ${
+                                                    task.starred
+                                                        ? 'fill-yellow-400 text-yellow-400'
+                                                        : 'text-gray-400 hover:text-yellow-400'
+                                                }`}
+                                            />
+                                        </Button>
                                     </TableCell>
                                     <TableCell className="font-medium text-left text-text">
                                         {task.title}
@@ -250,11 +287,25 @@ export default function TaskTable({tasks}: TaskTableProps) {
 
             {tasks.length > 0 && (
                 <div className="flex justify-between items-center p-4">
-                    <Button variant="outline" size="sm" className="text-text">
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-text"
+                        onClick={handlePreviousPage}
+                        disabled={currentPage === 1}
+                    >
                         ← Previous
                     </Button>
-                    <span className="text-sm text-muted-foreground text-text">1-{tasks.length} of {tasks.length}</span>
-                    <Button variant="outline" size="sm" className="text-text">
+                    <span className="text-sm text-muted-foreground text-text">
+            {startItem}-{endItem} of {totalItems}
+          </span>
+                    <Button
+                        variant="outline"
+                        size="sm"
+                        className="text-text"
+                        onClick={handleNextPage}
+                        disabled={currentPage === totalPages}
+                    >
                         Next →
                     </Button>
                 </div>
