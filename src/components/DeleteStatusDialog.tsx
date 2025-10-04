@@ -64,7 +64,7 @@ export function DeleteStatusDialog({
     };
 
     const ContentBody = () => (
-        <div className="space-y-6 text-center">
+        <div className="md:px-6 md:pb-6   space-y-6 text-center">
             <div className="space-y-2">
                 <h3 className="text-lg mb-3 font-semibold">
                     Beware! You're About to Erase the<br/>
