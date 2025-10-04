@@ -99,8 +99,8 @@ export function CreateTaskDialog({trigger, editMode = false, editTask, onClose}:
                 <Input
                     id="title"
                     name="title"
-                    defaultValue={editMode && editTask ? editTask.title : "Kill the Boss"}
-                    placeholder="Task title"
+                    defaultValue={editMode && editTask ? editTask.title : ""}
+                    placeholder={editMode ? "Edit task title..." : "Enter task title..."}
                     required
                 />
             </div>
@@ -119,7 +119,7 @@ export function CreateTaskDialog({trigger, editMode = false, editTask, onClose}:
             <div className="grid gap-2">
                 <Label>Status</Label>
                 <Select
-                    defaultValue={editMode && editTask ? editTask.status : (statuses.length > 0 ? statuses[0].id : "no-status")}
+                    defaultValue={editMode && editTask ? editTask.status : ""}
                     name="status"
                 >
                     <SelectTrigger id="status">
@@ -154,7 +154,7 @@ export function CreateTaskDialog({trigger, editMode = false, editTask, onClose}:
                 </Select>
             </div>
 
-            <Button type="submit" className="w-full text-white" variant="destructive">
+            <Button type="submit" className="w-full text-white">
                 {editMode ? "Update Task" : "Create"}
             </Button>
         </form>

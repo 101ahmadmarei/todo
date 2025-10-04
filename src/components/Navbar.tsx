@@ -7,6 +7,7 @@ import {
 import {useState, useEffect} from "react"
 import ThemeAndLanguage from "@/components/ThemeAndLanguage.tsx";
 import {Avatar, AvatarImage, AvatarFallback} from "@/components/ui/avatar";
+import {User, LogOut} from "lucide-react";
 
 export default function Navbar() {
     const [user, setUser] = useState<any>(null);
@@ -53,7 +54,7 @@ export default function Navbar() {
     };
 
     return (
-        <nav className="py-3  border-b bg-background rounded-t-lg">
+        <nav className="py-3   bg-background rounded-t-lg">
             <div className="container px-3 mx-auto flex items-center justify-between">
                 <div className="flex items-center gap-2">
                     <img src="/src/assets/Logo-3.png" alt="Todo" className="h-8 w-auto"/>
@@ -74,10 +75,13 @@ export default function Navbar() {
                             </button>
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end">
-                            <DropdownMenuItem>Profile</DropdownMenuItem>
-                            <DropdownMenuItem>Settings</DropdownMenuItem>
-                            <DropdownMenuItem className="text-red-600" onClick={handleLogout}>
-                                Logout
+                            <DropdownMenuItem>
+                                <User className="mr-2 h-4 w-4"/>
+                                Profile
+                            </DropdownMenuItem>
+                            <DropdownMenuItem onClick={handleLogout}>
+                                <LogOut className="mr-2 h-4 w-4"/>
+                                Exit
                             </DropdownMenuItem>
                         </DropdownMenuContent>
                     </DropdownMenu>

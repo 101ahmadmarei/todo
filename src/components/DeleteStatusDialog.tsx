@@ -78,7 +78,6 @@ export function DeleteStatusDialog({
             </div>
 
             <Button
-                variant="destructive"
                 onClick={handleDelete}
                 className="text-white w-full"
             >

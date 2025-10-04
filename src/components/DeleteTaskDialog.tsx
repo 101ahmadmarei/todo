@@ -69,7 +69,6 @@ export function DeleteTaskDialog({
             </div>
 
             <Button
-                variant="destructive"
                 onClick={handleDelete}
                 className="w-full text-white"
             >

@@ -18,7 +18,7 @@ import {
     DropdownMenuTrigger,
     DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
-import {MoreHorizontal, Edit, Trash2, ArrowRightLeft} from "lucide-react"
+import {MoreHorizontal, Edit, Trash, ArrowRightLeft} from "lucide-react"
 import {CreateTaskDialog} from "@/components/CreateTaskDialog"
 import {DeleteTaskDialog} from "@/components/DeleteTaskDialog"
 import {DeleteStatusDialog} from "@/components/DeleteStatusDialog"
@@ -86,8 +86,9 @@ export default function TaskTable({tasks}: TaskTableProps) {
                             <TableCell colSpan={5} className="text-center py-12 md:table-cell">
                                 <div className="flex flex-col items-center gap-3">
                                     <span className="text-4xl">👻</span>
-                                    <p className="text-muted-foreground">No tasks found</p>
-                                    <p className="text-sm text-muted-foreground">Try adjusting your filters or create a
+                                    <p className="text-muted-foreground text-text">No tasks found</p>
+                                    <p className="text-sm text-muted-foreground text-text">Try adjusting your filters or
+                                        create a
                                         new task!</p>
                                 </div>
                             </TableCell>
@@ -101,11 +102,12 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                     <TableCell className="text-left">
                                         <span className="text-primary">★</span>
                                     </TableCell>
-                                    <TableCell className="font-medium text-left">
+                                    <TableCell className="font-medium text-left text-text">
                                         {task.title}
                                     </TableCell>
                                     <TableCell className="text-left max-w-[200px] hidden md:table-cell">
-                                        <div className="truncate" title={task.description || "No description"}>
+                                        <div className="truncate text-text"
+                                             title={task.description || "No description"}>
                                             {task.description || "No description"}
                                         </div>
                                     </TableCell>
@@ -146,7 +148,7 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                             <DropdownMenuContent align="end">
                                                 {/* Header for status options */}
                                                 <div
-                                                    className="px-2 py-1.5 text-sm font-medium text-muted-foreground flex items-center gap-2">
+                                                    className="px-2 py-1.5 text-sm font-medium text-muted-foreground flex items-center gap-2 text-text">
                                                     <ArrowRightLeft className="h-4 w-4"/>
                                                     Change to
                                                 </div>
@@ -156,10 +158,10 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                                     <DropdownMenuItem
                                                         key={status.id}
                                                         onClick={() => handleStatusChange(task.id, status.id)}
-                                                        className={task.status === status.id ? 'bg-accent' : ''}
+                                                        className={`text-text ${task.status === status.id ? 'bg-accent' : ''}`}
                                                     >
                                                         <div className="flex items-center gap-2">
-                                                            <div className={`w-3 h-3 rounded-full ${
+                                                            <div className={`w-4 h-4 rounded-[4px] ${
                                                                 status.color === 'red' ? 'bg-red-500' :
                                                                     status.color === 'purple' ? 'bg-purple-500' :
                                                                         status.color === 'blue-light' ? 'bg-blue-300' :
@@ -169,27 +171,28 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                                                                         'bg-blue-500'
                                                             }`}></div>
 
-                                                            {status.title}
+                                                            <span className="text-text">{status.title}</span>
                                                             {task.status === status.id &&
-                                                                <span className="ml-auto">✓</span>}
+                                                                <span className="ml-auto text-text">✓</span>}
                                                         </div>
                                                     </DropdownMenuItem>
                                                 ))}
 
                                                 <DropdownMenuSeparator/>
 
-                                                <DropdownMenuItem onClick={() => handleEditTask(task)}>
+                                                <DropdownMenuItem onClick={() => handleEditTask(task)}
+                                                                  className="text-text">
                                                     <Edit className="mr-2 h-4 w-4"/>
-                                                    Edit Task
+                                                    Edit
                                                 </DropdownMenuItem>
 
                                                 <DropdownMenuItem
                                                     onClick={() => handleDeleteTask(task.id, task.title)}
+                                                    className="text-text"
                                                 >
-                                                    <Trash2 className="mr-2 h-4 w-4"/>
+                                                    <Trash className="mr-2 h-4 w-4"/>
                                                     Delete Task
                                                 </DropdownMenuItem>
-
 
                                                 <DropdownMenuItem
                                                     onClick={() => {
@@ -198,8 +201,9 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                                             handleDeleteStatus(taskStatus.id, taskStatus.title);
                                                         }
                                                     }}
+                                                    className="text-text"
                                                 >
-                                                    <Trash2 className="mr-2 h-4 w-4"/>
+                                                    <Trash className="mr-2 h-4 w-4"/>
                                                     Delete Status
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
@@ -246,11 +250,11 @@ export default function TaskTable({tasks}: TaskTableProps) {
 
             {tasks.length > 0 && (
                 <div className="flex justify-between items-center p-4">
-                    <Button variant="outline" size="sm">
+                    <Button variant="outline" size="sm" className="text-text">
                         ← Previous
                     </Button>
-                    <span className="text-sm text-muted-foreground">1-{tasks.length} of {tasks.length}</span>
-                    <Button variant="outline" size="sm">
+                    <span className="text-sm text-muted-foreground text-text">1-{tasks.length} of {tasks.length}</span>
+                    <Button variant="outline" size="sm" className="text-text">
                         Next →
                     </Button>
                 </div>

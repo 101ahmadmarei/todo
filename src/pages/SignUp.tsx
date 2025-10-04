@@ -96,7 +96,7 @@ export default function SignUp() {
         <div className="flex flex-1 items-center justify-center bg-background">
             <div className="max-w-lg  sm:min-w-lg lg:max-w-md w-full px-4">
                 <h1 className="text-2xl font-bold mb-2 text-center">{t('signup.title')}</h1>
-                <p className="text-subText text-center mb-6">
+                <p className="text-subtext text-center mb-6">
                     {t('signup.subtitle')}
                 </p>
 
@@ -123,6 +123,7 @@ export default function SignUp() {
                                     onClick={() => handleAvatarUpload(setFieldValue)}
                                     disabled={isSubmitting}
                                     size="sm"
+                                    className="font-bold"
                                 >
                                     <UploadIcon/> {t('signup.upload')}
                                 </Button>
@@ -213,7 +214,7 @@ export default function SignUp() {
                     )}
                 </Formik>
 
-                <p className="text-sm text-center mt-4">
+                <p className="text-sm text-center mt-4 text-subtext ">
                     {t('signup.haveAccount')}{" "}
                     <Button asChild variant="link" className="p-0 h-auto font-medium">
                         <Link to="/signin">{t('signup.signInLink')}</Link>

@@ -51,17 +51,17 @@ export default function Home() {
             {!hasStatuses ? (
                 <div className="w-full h-[80vh] flex flex-col items-center justify-center text-center px-3 gap-4">
                     <img src="/src/assets/ghost-3.png" alt="Ghost"/>
-                    <p className="text-xl font-bold">
+                    <p className="text-xl mt-4 font-bold">
                         Uh-oh... It's Empty in Here!
                     </p>
-                    <p className="text-subtext leading-tight">
+                    <p className="text-subtext leading-2xl">
                         Looks like all your statuses have vanished into the abyss! <br/>
                         Create a new one before the ghosts take over...
                     </p>
                     <CreateStatusDialog
                         trigger={
                             <Button className="bg-primary hover:bg-primary/90 text-white px-6 py-2">
-                                👻 Create New Status
+                                Create New Status
                             </Button>
                         }
                     />

@@ -10,8 +10,7 @@ import {useStatusStore} from "@/store/statusStore.ts";
 import {useTaskStore} from "@/store/taskStore.ts";
 import {CreateStatusDialog} from "@/components/CreateStatusDialog.tsx";
 import {DeleteStatusDialog} from "@/components/DeleteStatusDialog.tsx";
-import {Button} from "@/components/ui/button";
-import {CircleFadingPlus, Trash2} from "lucide-react";
+import {CircleFadingPlus, Trash2, Search} from "lucide-react";
 import {useState} from "react";
 
 interface TaskTableHeaderProps {
@@ -42,17 +41,21 @@ export default function TaskTableHeader({onStatusChange, onSearchChange}: TaskTa
     };
 
     return (
-        <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
-            <div className="flex flex-1 gap-2 w-full sm:w-auto">
-                <Input
-                    type="search"
-                    placeholder="Search..."
-                    className="flex-1"
-                    onChange={handleSearchChange}
-                />
+        <div className="">
+            <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-6">
+                <div className="relative flex-1  w-full md:w-auto">
+                    <Search
+                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4"/>
+                    <Input
+                        type="search"
+                        placeholder="Search..."
+                        className="pl-10 flex-1"
+                        onChange={handleSearchChange}
+                    />
+                </div>
 
                 <Select defaultValue="status" onValueChange={handleStatusChange}>
-                    <SelectTrigger className="w-[160px]">
+                    <SelectTrigger className="w-full md:w-[160px] ">
                         <SelectValue placeholder="Status"/>
                     </SelectTrigger>
                     <SelectContent>
@@ -61,7 +64,7 @@ export default function TaskTableHeader({onStatusChange, onSearchChange}: TaskTa
                             const taskCount = getTaskCountForStatus(status.id);
                             return (
                                 <SelectItem key={status.id} value={status.id}>
-                                    <div className="flex justify-between  ">
+                                    <div className="flex justify-between flex-1 ">
                                         <div className="flex gap-2 items-center">
                                             <div className={`w-3 h-3 rounded-[4px]  ${
                                                 status.color === 'red' ? 'bg-red-500' :
@@ -74,10 +77,10 @@ export default function TaskTableHeader({onStatusChange, onSearchChange}: TaskTa
                                             }`}></div>
                                             <span className="flex-1">{status.title}</span>
                                         </div>
-                                        <p
+                                        <span
                                             className="ml-auto px-2 py-1 text-xs bg-gray-100 text-gray-700 rounded-full min-w-[20px] text-center">
                                             {taskCount}
-                                        </p>
+                                        </span>
                                     </div>
                                 </SelectItem>
                             );

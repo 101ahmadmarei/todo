@@ -54,7 +54,7 @@ export default function SignIn() {
             <div className="max-w-lg lg:max-w-md w-full px-4">
                 <div className="lg:px-4">
                     <h1 className="text-2xl font-bold mb-2 text-center">{t('signin.title')}</h1>
-                    <p className="text-subText text-center mb-6 mx-3 leading-8">
+                    <p className="text-subtext text-center mb-6 mx-3 leading-8">
                         {t('signin.subtitle')}
                     </p>
                 </div>
@@ -126,7 +126,7 @@ export default function SignIn() {
                     )}
                 </Formik>
 
-                <p className="text-sm text-center mt-4">
+                <p className="text-sm text-center font-bold mt-4 text-subtext ">
                     {t('signin.noAccount')}{" "}
                     <Button asChild variant="link" className="p-0 h-auto font-medium">
                         <Link to="/signup">{t('signin.signUpLink')}</Link>
