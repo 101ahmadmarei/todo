@@ -21,6 +21,7 @@ import {
 import {MoreHorizontal, Edit, Trash2, ArrowRightLeft} from "lucide-react"
 import {CreateTaskDialog} from "@/components/CreateTaskDialog"
 import {DeleteTaskDialog} from "@/components/DeleteTaskDialog"
+import {DeleteStatusDialog} from "@/components/DeleteStatusDialog"
 import {useState} from "react"
 
 interface TaskTableProps {
@@ -29,9 +30,10 @@ interface TaskTableProps {
 
 export default function TaskTable({tasks}: TaskTableProps) {
     const statuses = useStatusStore((state) => state.statuses);
-    const {updateTask, removeTask} = useTaskStore();
+    const {updateTask} = useTaskStore();
     const [editingTask, setEditingTask] = useState<Task | null>(null);
     const [deletingTask, setDeletingTask] = useState<{ id: string, title: string } | null>(null);
+    const [deletingStatus, setDeletingStatus] = useState<{ id: string, title: string } | null>(null);
 
     const getStatusById = (statusId: string) => {
         return statuses.find(status => status.id === statusId);
@@ -60,6 +62,10 @@ export default function TaskTable({tasks}: TaskTableProps) {
 
     const handleEditTask = (task: Task) => {
         setEditingTask(task);
+    };
+
+    const handleDeleteStatus = (statusId: string, statusTitle: string) => {
+        setDeletingStatus({id: statusId, title: statusTitle});
     };
 
     return (
@@ -162,6 +168,7 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                                                                     status.color === 'stone' ? 'bg-stone-400' :
                                                                                         'bg-blue-500'
                                                             }`}></div>
+
                                                             {status.title}
                                                             {task.status === status.id &&
                                                                 <span className="ml-auto">✓</span>}
@@ -182,6 +189,21 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                                 >
                                                     <Trash2 className="mr-2 h-4 w-4"/>
                                                     Delete Task
+                                                </DropdownMenuItem>
+
+                                                <DropdownMenuSeparator/>
+
+                                                <DropdownMenuItem
+                                                    onClick={() => {
+                                                        const taskStatus = getStatusById(task.status);
+                                                        if (taskStatus) {
+                                                            handleDeleteStatus(taskStatus.id, taskStatus.title);
+                                                        }
+                                                    }}
+                                                    className="text-red-600 focus:text-red-600"
+                                                >
+                                                    <Trash2 className="mr-2 h-4 w-4"/>
+                                                    Delete Status
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
@@ -210,6 +232,17 @@ export default function TaskTable({tasks}: TaskTableProps) {
                     open={!!deletingTask}
                     onOpenChange={(open) => {
                         if (!open) setDeletingTask(null);
+                    }}
+                />
+            )}
+
+            {deletingStatus && (
+                <DeleteStatusDialog
+                    statusId={deletingStatus.id}
+                    statusTitle={deletingStatus.title}
+                    open={!!deletingStatus}
+                    onOpenChange={(open) => {
+                        if (!open) setDeletingStatus(null);
                     }}
                 />
             )}
