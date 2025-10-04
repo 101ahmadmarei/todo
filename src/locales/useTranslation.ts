@@ -26,7 +26,6 @@ export const useTranslation = () => {
             return key;
         }
 
-        // Replace parameters in the translation string
         if (params) {
             return value.replace(/\{\{(\w+)\}\}/g, (match: string, paramKey: string) => {
                 return params[paramKey]?.toString() || match;

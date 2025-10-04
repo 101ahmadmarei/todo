@@ -5,7 +5,7 @@ import {
     DropdownMenuTrigger
 } from "@/components/ui/dropdown-menu";
 import {Languages, Moon, Sun} from "lucide-react";
-import {useTheme} from "@/components/theme-provider";
+import {useTheme} from "@/store/theme-provider.tsx";
 import {useLanguage} from "@/components/language-provider";
 
 const ThemeAndLanguage = () => {
@@ -22,7 +22,6 @@ const ThemeAndLanguage = () => {
 
     return (
         <div className="theme-and-language flex items-center gap-4">
-            {/* Language Dropdown */}
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
                     <Languages className="cursor-pointer h-6 w-6 hover:text-primary transition-colors"/>
@@ -45,7 +44,6 @@ const ThemeAndLanguage = () => {
                 </DropdownMenuContent>
             </DropdownMenu>
 
-            {/* Theme Toggle */}
             {theme === "dark" ? (
                 <Sun
                     className="h-8 w-8 cursor-pointer hover:text-primary transition-colors"

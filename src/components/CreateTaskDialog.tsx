@@ -1,7 +1,3 @@
-// app/components/create-task-dialog.tsx
-"use client";
-
-import * as React from "react";
 import {Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger} from "@/components/ui/dialog";
 import {
     Sheet,
@@ -25,33 +21,19 @@ import {useTaskStore, type Task} from "@/store/taskStore";
 import {useStatusStore} from "@/store/statusStore";
 import {useTranslation} from "@/locales/useTranslation.ts";
 import {useLanguage} from "@/components/language-provider.tsx";
+import useIsMobile from "@/hooks/useIsMobile.ts";
+import {type FormEvent, type ReactNode, useEffect, useState} from "react";
 
-// Hook to detect if we're on mobile
-function useIsMobile() {
-    const [isMobile, setIsMobile] = React.useState(false);
-
-    React.useEffect(() => {
-        const checkIsMobile = () => {
-            setIsMobile(window.innerWidth < 768);
-        };
-
-        checkIsMobile();
-        window.addEventListener('resize', checkIsMobile);
-        return () => window.removeEventListener('resize', checkIsMobile);
-    }, []);
-
-    return isMobile;
-}
 
 interface CreateTaskDialogProps {
-    trigger?: React.ReactNode;
+    trigger?: ReactNode;
     editMode?: boolean;
     editTask?: Task;
     onClose?: () => void;
 }
 
-export function CreateTaskDialog({trigger, editMode = false, editTask, onClose}: CreateTaskDialogProps) {
-    const [open, setOpen] = React.useState(editMode || false);
+function CreateTaskDialog({trigger, editMode = false, editTask, onClose}: CreateTaskDialogProps) {
+    const [open, setOpen] = useState(editMode || false);
     const {addTask, updateTask} = useTaskStore();
     const statuses = useStatusStore((state) => state.statuses);
     const isMobile = useIsMobile();
@@ -60,13 +42,26 @@ export function CreateTaskDialog({trigger, editMode = false, editTask, onClose}:
     const isRTL = language === 'ar'
 
 
-    React.useEffect(() => {
+    // Helper function to get status color class
+    const getStatusColorClass = (color: string): string => {
+        const colorMap: Record<string, string> = {
+            'red': 'bg-red-500',
+            'purple': 'bg-purple-500',
+            'blue-light': 'bg-blue-300',
+            'blue-dark': 'bg-blue-700',
+            'green': 'bg-green-600',
+            'stone': 'bg-stone-400',
+        };
+        return colorMap[color] || 'bg-blue-500';
+    };
+
+    useEffect(() => {
         if (editMode) {
             setOpen(true);
         }
     }, [editMode]);
 
-    function onSubmit(e: React.FormEvent<HTMLFormElement>) {
+    function onSubmit(e: FormEvent<HTMLFormElement>) {
         e.preventDefault();
         const fd = new FormData(e.currentTarget);
         const title = fd.get("title") as string;
@@ -137,16 +132,10 @@ export function CreateTaskDialog({trigger, editMode = false, editTask, onClose}:
                     <SelectContent>
                         {statuses.length > 0 ? (
                             statuses.map((status) => (
-                                <SelectItem key={status.id} value={status.id}>
+                                <SelectItem key={status.id} value={status.id.toString()}>
                                     <div className="flex items-center gap-2">
                                         <div
-                                            className={`w-3 h-3 rounded-full ${status.color === 'red' ? 'bg-red-500' :
-                                                status.color === 'purple' ? 'bg-purple-500' :
-                                                    status.color === 'blue-light' ? 'bg-blue-300' :
-                                                        status.color === 'blue-dark' ? 'bg-blue-700' :
-                                                            status.color === 'green' ? 'bg-green-600' :
-                                                                status.color === 'stone' ? 'bg-stone-400' :
-                                                                    'bg-blue-500'}`}></div>
+                                            className={`w-3 h-3 rounded-full ${getStatusColorClass(status.color)}`}></div>
                                         {status.title}
                                     </div>
                                 </SelectItem>
@@ -213,3 +202,5 @@ export function CreateTaskDialog({trigger, editMode = false, editTask, onClose}:
         </Dialog>
     );
 }
+
+export default CreateTaskDialog

@@ -4,7 +4,7 @@ import {Button} from "@/components/ui/button.tsx";
 import Navbar from "@/components/Navbar.tsx";
 import {CreateStatusDialog} from "@/components/CreateStatusDialog.tsx";
 import {useStatusStore} from "@/store/statusStore";
-import {CreateTaskDialog} from "@/components/CreateTaskDialog.tsx";
+import CreateTaskDialog from "@/components/CreateTaskDialog.tsx";
 import {useTaskStore} from "@/store/taskStore";
 import {useState, useMemo} from "react";
 import {useTranslation} from "@/locales/useTranslation.ts";

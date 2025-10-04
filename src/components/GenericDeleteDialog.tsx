@@ -1,6 +1,3 @@
-"use client";
-
-import * as React from "react";
 import {
     Dialog,
     DialogContent,
@@ -14,59 +11,52 @@ import {
     SheetTitle,
 } from "@/components/ui/sheet";
 import {Button} from "@/components/ui/button";
-import {useTaskStore} from "@/store/taskStore";
 import {useTranslation} from "@/locales/useTranslation.ts";
+import useIsMobile from "@/hooks/useIsMobile.ts";
 
-interface DeleteTaskDialogProps {
-    taskId: string;
-    taskTitle: string;
+type DeleteType = 'task' | 'status';
+
+interface GenericDeleteDialogProps {
+    type: DeleteType;
+    id: string | number;
+    title: string;
     open: boolean;
     onOpenChange: (open: boolean) => void;
+    onDelete: (id: string | number) => void;
 }
 
-// Hook to detect if we're on mobile
-function useIsMobile() {
-    const [isMobile, setIsMobile] = React.useState(false);
-
-    React.useEffect(() => {
-        const checkIsMobile = () => {
-            setIsMobile(window.innerWidth < 768);
-        };
-
-        checkIsMobile();
-        window.addEventListener('resize', checkIsMobile);
-        return () => window.removeEventListener('resize', checkIsMobile);
-    }, []);
-
-    return isMobile;
-}
-
-export function DeleteTaskDialog({
-                                     taskId,
-                                     taskTitle,
-                                     open,
-                                     onOpenChange
-                                 }: DeleteTaskDialogProps) {
-    const removeTask = useTaskStore((state) => state.removeTask);
+export function GenericDeleteDialog({
+                                        type,
+                                        id,
+                                        title,
+                                        open,
+                                        onOpenChange,
+                                        onDelete
+                                    }: GenericDeleteDialogProps) {
     const isMobile = useIsMobile();
     const {t} = useTranslation();
 
     const handleDelete = () => {
-        removeTask(taskId);
+        onDelete(id);
         onOpenChange(false);
+    };
+
+    // Get the appropriate translation keys based on type
+    const getTranslationKey = (key: string) => {
+        return type === 'task' ? `dialogs.deleteTask.${key}` : `dialogs.deleteStatus.${key}`;
     };
 
     const ContentBody = () => (
         <div className="md:px-6 md:pb-6 space-y-6 text-center">
             <div className="space-y-2">
-                <h3 className="text-lg font-semibold ">
-                    {t('dialogs.deleteTask.warningTitle')}<br/>
-                    "{taskTitle}" {t('dialogs.deleteTask.warningTitle2')}
+                <h3 className="text-lg font-semibold mb-3">
+                    {t(getTranslationKey('warningTitle'))}<br/>
+                    "{title}" {t(getTranslationKey('warningTitle2'))}
                 </h3>
 
                 <div className="space-y-1 text-sm text-muted-foreground">
-                    <p>{t('dialogs.deleteTask.warningMessage')}</p>
-                    <p>{t('dialogs.deleteTask.warningMessage2')}</p>
+                    <p>{t(getTranslationKey('warningMessage'))}</p>
+                    <p>{t(getTranslationKey('warningMessage2'))}</p>
                 </div>
             </div>
 
@@ -74,7 +64,7 @@ export function DeleteTaskDialog({
                 onClick={handleDelete}
                 className="w-full text-white"
             >
-                {t('dialogs.deleteTask.deleteButton')}
+                {t(getTranslationKey('deleteButton'))}
             </Button>
         </div>
     );
@@ -85,7 +75,7 @@ export function DeleteTaskDialog({
                 <SheetContent side="bottom" className="h-auto">
                     <div className="relative px-6 py-4">
                         <SheetHeader className="m-0">
-                            <SheetTitle>{t('dialogs.deleteTask.title')}</SheetTitle>
+                            <SheetTitle>{t(getTranslationKey('title'))}</SheetTitle>
                         </SheetHeader>
                     </div>
                     <ContentBody/>
@@ -99,7 +89,7 @@ export function DeleteTaskDialog({
             <DialogContent className="sm:max-w-md p-0 overflow-hidden">
                 <div className="relative px-6 py-4">
                     <DialogHeader className="m-0">
-                        <DialogTitle>{t('dialogs.deleteTask.title')}</DialogTitle>
+                        <DialogTitle>{t(getTranslationKey('title'))}</DialogTitle>
                     </DialogHeader>
                 </div>
                 <ContentBody/>

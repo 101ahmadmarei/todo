@@ -9,9 +9,7 @@ import {
 import {useStatusStore} from "@/store/statusStore.ts"
 import {useTaskStore} from "@/store/taskStore.ts"
 import {CreateStatusDialog} from "@/components/CreateStatusDialog.tsx"
-import {DeleteStatusDialog} from "@/components/DeleteStatusDialog.tsx"
 import {CircleFadingPlus, Search} from "lucide-react"
-import {useState} from "react"
 import {useTranslation} from "@/locales/useTranslation.ts"
 import {useLanguage} from "@/components/language-provider"
 
@@ -26,10 +24,6 @@ export default function TaskTableHeader({
                                         }: TaskTableHeaderProps) {
     const statuses = useStatusStore((state) => state.statuses)
     const tasks = useTaskStore((state) => state.tasks)
-    const [deletingStatus, setDeletingStatus] = useState<{
-        id: string
-        title: string
-    } | null>(null)
     const {t} = useTranslation()
     const {language} = useLanguage()
     const isRTL = language === 'ar'
@@ -42,11 +36,10 @@ export default function TaskTableHeader({
         onSearchChange?.(e.target.value)
     }
 
-    // Count tasks for a specific status
-    const getTaskCountForStatus = (statusId: string) =>
-        tasks.filter((task) => task.status === statusId).length
 
-    // Map status color name → Tailwind class
+    const getTaskCountForStatus = (statusId: number) =>
+        tasks.filter((task) => +task.status === statusId).length
+
     const getColorClass = (color: string) => {
         switch (color) {
             case "red":
@@ -98,7 +91,7 @@ export default function TaskTableHeader({
                         {statuses.map((status) => {
                             const taskCount = getTaskCountForStatus(status.id)
                             return (
-                                <SelectItem key={status.id} value={status.id}>
+                                <SelectItem key={status.id} value={status.id.toString()}>
                                     <div className="flex items-center gap-2 justify-between w-full">
                                         <div className="flex items-center gap-2">
                                             <div
@@ -131,16 +124,7 @@ export default function TaskTableHeader({
                 </Select>
             </div>
 
-            {deletingStatus && (
-                <DeleteStatusDialog
-                    statusId={deletingStatus.id}
-                    statusTitle={deletingStatus.title}
-                    open={!!deletingStatus}
-                    onOpenChange={(open) => {
-                        if (!open) setDeletingStatus(null)
-                    }}
-                />
-            )}
+
         </div>
     )
 }

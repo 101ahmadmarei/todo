@@ -24,14 +24,11 @@ import {
     Trash,
     ArrowRightLeft,
     Star,
-    ChevronLeft,
-    ChevronRight,
     ArrowRight,
     ArrowLeft
 } from "lucide-react"
-import {CreateTaskDialog} from "@/components/CreateTaskDialog"
-import {DeleteTaskDialog} from "@/components/DeleteTaskDialog"
-import {DeleteStatusDialog} from "@/components/DeleteStatusDialog"
+import CreateTaskDialog from "@/components/CreateTaskDialog"
+import {GenericDeleteDialog} from "@/components/GenericDeleteDialog"
 import {useState} from "react"
 import {useTranslation} from "@/locales/useTranslation.ts"
 import {useLanguage} from "@/components/language-provider"
@@ -44,14 +41,29 @@ const ITEMS_PER_PAGE = 8;
 
 export default function TaskTable({tasks}: TaskTableProps) {
     const statuses = useStatusStore((state) => state.statuses);
-    const {updateTask} = useTaskStore();
+    const {updateTask, removeTask} = useTaskStore();
+    const {removeStatus} = useStatusStore();
     const [editingTask, setEditingTask] = useState<Task | null>(null);
-    const [deletingTask, setDeletingTask] = useState<{ id: string, title: string } | null>(null);
-    const [deletingStatus, setDeletingStatus] = useState<{ id: string, title: string } | null>(null);
+    const [deletingTask, setDeletingTask] = useState<{ id: number, title: string } | null>(null);
+    const [deletingStatus, setDeletingStatus] = useState<{ id: number, title: string } | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const {t} = useTranslation();
     const {language} = useLanguage();
     const isRTL = language === 'ar';
+
+    const handleTaskDelete = (id: string | number) => {
+        removeTask(Number(id));
+    };
+
+    const handleStatusDelete = (id: string | number) => {
+        const statusId = Number(id);
+        const tasksWithStatus = tasks.filter(task => Number(task.status) === statusId);
+        tasksWithStatus.forEach(task => {
+            removeTask(task.id);
+        });
+
+        removeStatus(statusId);
+    };
 
     // Pagination calculations
     const totalPages = Math.ceil(tasks.length / ITEMS_PER_PAGE);
@@ -70,12 +82,12 @@ export default function TaskTable({tasks}: TaskTableProps) {
         setCurrentPage(prev => Math.min(totalPages, prev + 1));
     };
 
-    const handleStarClick = (taskId: string, currentStarred: boolean) => {
+    const handleStarClick = (taskId: number, currentStarred: boolean) => {
         updateTask(taskId, {starred: !currentStarred});
     };
 
-    const getStatusById = (statusId: string) => {
-        return statuses.find(status => status.id === statusId);
+    const getStatusById = (statusId: string | number) => {
+        return statuses.find(status => status.id === Number(statusId));
     };
 
     const getStatusColor = (color: string) => {
@@ -91,11 +103,24 @@ export default function TaskTable({tasks}: TaskTableProps) {
         return colorMap[color] || 'bg-gray-100 text-gray-700';
     };
 
-    const handleStatusChange = (taskId: string, newStatusId: string) => {
-        updateTask(taskId, {status: newStatusId});
+    const getStatusIndicatorColor = (color: string): string => {
+        const colorMap: Record<string, string> = {
+            'red': 'bg-red-500',
+            'purple': 'bg-purple-500',
+            'blue-light': 'bg-blue-300',
+            'blue-dark': 'bg-blue-700',
+            'green': 'bg-green-600',
+            'stone': 'bg-stone-400',
+            'blue': 'bg-blue-500',
+        };
+        return colorMap[color] || 'bg-blue-500';
     };
 
-    const handleDeleteTask = (taskId: string, taskTitle: string) => {
+    const handleStatusChange = (taskId: number, newStatusId: number) => {
+        updateTask(taskId, {status: String(newStatusId)});
+    };
+
+    const handleDeleteTask = (taskId: number, taskTitle: string) => {
         setDeletingTask({id: taskId, title: taskTitle});
     };
 
@@ -103,7 +128,7 @@ export default function TaskTable({tasks}: TaskTableProps) {
         setEditingTask(task);
     };
 
-    const handleDeleteStatus = (statusId: string, statusTitle: string) => {
+    const handleDeleteStatus = (statusId: number, statusTitle: string) => {
         setDeletingStatus({id: statusId, title: statusTitle});
     };
 
@@ -127,8 +152,8 @@ export default function TaskTable({tasks}: TaskTableProps) {
                             <TableCell colSpan={5} className="text-center py-12 md:table-cell">
                                 <div className="flex flex-col items-center gap-3">
                                     <span className="text-4xl">👻</span>
-                                    <p className="text-muted-foreground text-text">{t('table.noTasksFound')}</p>
-                                    <p className="text-sm text-muted-foreground text-text">{t('table.noTasksMessage')}</p>
+                                    <p className="text-muted-foreground">{t('table.noTasksFound')}</p>
+                                    <p className="text-sm text-muted-foreground">{t('table.noTasksMessage')}</p>
                                 </div>
                             </TableCell>
                             <TableCell className="hidden md:table-cell"></TableCell>
@@ -169,15 +194,7 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                         {/* Mobile: Show only color dot */}
                                         <div className="md:hidden">
                                             <div
-                                                className={`w-6 h-6 rounded-sm ${
-                                                    taskStatus?.color === 'red' ? 'bg-red-500' :
-                                                        taskStatus?.color === 'purple' ? 'bg-purple-500' :
-                                                            taskStatus?.color === 'blue-light' ? 'bg-blue-300' :
-                                                                taskStatus?.color === 'blue-dark' ? 'bg-blue-700' :
-                                                                    taskStatus?.color === 'green' ? 'bg-green-600' :
-                                                                        taskStatus?.color === 'stone' ? 'bg-stone-400' :
-                                                                            'bg-blue-500'
-                                                }`}
+                                                className={`w-6 h-6 rounded-sm ${taskStatus ? getStatusIndicatorColor(taskStatus.color) : 'bg-blue-500'}`}
                                                 title={taskStatus ? taskStatus.title : 'Unknown'}
                                             ></div>
                                         </div>
@@ -208,31 +225,31 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                                 </div>
 
                                                 {/* Status Options */}
-                                                {statuses.map((status) => (
-                                                    <DropdownMenuItem
-                                                        key={status.id}
-                                                        onClick={() => handleStatusChange(task.id, status.id)}
-                                                        className={`text-text ${task.status === status.id ? 'bg-accent' : ''} ${isRTL ? 'flex-row-reverse' : ''}`}
-                                                    >
-                                                        <div
-                                                            className={`flex items-center gap-2 w-full ${isRTL ? 'flex-row-reverse' : ''}`}>
-                                                            <div className={`w-4 h-4 rounded-[4px] ${
-                                                                status.color === 'red' ? 'bg-red-500' :
-                                                                    status.color === 'purple' ? 'bg-purple-500' :
-                                                                        status.color === 'blue-light' ? 'bg-blue-300' :
-                                                                            status.color === 'blue-dark' ? 'bg-blue-700' :
-                                                                                status.color === 'green' ? 'bg-green-600' :
-                                                                                    status.color === 'stone' ? 'bg-stone-400' :
-                                                                                        'bg-blue-500'
-                                                            }`}></div>
+                                                {statuses.map((status) => {
+                                                    const isCurrentStatus = Number(task.status) === status.id;
+                                                    const statusItemClass = `text-text ${isCurrentStatus ? 'bg-accent' : ''} ${isRTL ? 'flex-row-reverse' : ''}`;
+                                                    const statusContentClass = `flex items-center gap-2 w-full ${isRTL ? 'flex-row-reverse' : ''}`;
 
-                                                            <span className="text-text">{status.title}</span>
-                                                            {task.status === status.id &&
-                                                                <span
-                                                                    className={`text-text ${isRTL ? 'mr-auto' : 'ml-auto'}`}>✓</span>}
-                                                        </div>
-                                                    </DropdownMenuItem>
-                                                ))}
+                                                    return (
+                                                        <DropdownMenuItem
+                                                            key={status.id}
+                                                            onClick={() => handleStatusChange(task.id, status.id)}
+                                                            className={statusItemClass}
+                                                        >
+                                                            <div className={statusContentClass}>
+                                                                <div
+                                                                    className={`w-4 h-4 rounded-[4px] ${getStatusIndicatorColor(status.color)}`}/>
+                                                                <span className="text-text">{status.title}</span>
+                                                                {isCurrentStatus && (
+                                                                    <span
+                                                                        className={`text-text ${isRTL ? 'mr-auto' : 'ml-auto'}`}>
+                                                                        ✓
+                                                                    </span>
+                                                                )}
+                                                            </div>
+                                                        </DropdownMenuItem>
+                                                    );
+                                                })}
 
                                                 <DropdownMenuSeparator/>
 
@@ -284,25 +301,31 @@ export default function TaskTable({tasks}: TaskTableProps) {
                 />
             )}
 
+            {/* Delete Task Dialog */}
             {deletingTask && (
-                <DeleteTaskDialog
-                    taskId={deletingTask.id}
-                    taskTitle={deletingTask.title}
+                <GenericDeleteDialog
+                    type="task"
+                    id={deletingTask.id}
+                    title={deletingTask.title}
                     open={!!deletingTask}
                     onOpenChange={(open) => {
                         if (!open) setDeletingTask(null);
                     }}
+                    onDelete={handleTaskDelete}
                 />
             )}
 
+            {/* Delete Status Dialog */}
             {deletingStatus && (
-                <DeleteStatusDialog
-                    statusId={deletingStatus.id}
-                    statusTitle={deletingStatus.title}
+                <GenericDeleteDialog
+                    type="status"
+                    id={deletingStatus.id}
+                    title={deletingStatus.title}
                     open={!!deletingStatus}
                     onOpenChange={(open) => {
                         if (!open) setDeletingStatus(null);
                     }}
+                    onDelete={handleStatusDelete}
                 />
             )}
             {tasks.length > 0 && (

@@ -5,13 +5,11 @@ export default function AuthSidebar() {
 
     return (
         <div className="hidden lg:flex flex-col justify-between bg-primary text-white w-[520px] p-12">
-            {/* Top Logo */}
             <div className="flex  justify-center gap-2">
                 <img src="/src/assets/Logo.png" alt="Ghost" className="w-auto mt-8"/>
 
             </div>
 
-            {/* Center Ghost + Text */}
             <div className="">
                 <img src="/src/assets/ghost-2.png" alt="Ghost" className=""/>
                 <div
@@ -20,7 +18,6 @@ export default function AuthSidebar() {
                 </div>
             </div>
 
-            {/* Bottom ghost + text */}
             <div className="flex items-center gap-2">
                 <img src="/src/assets/ghost-1.png" alt="Ghost" className="h-28 w-auto mb-6"/>
                 <div>

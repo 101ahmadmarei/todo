@@ -1,4 +1,3 @@
-import * as React from "react";
 import {
     Dialog,
     DialogContent,
@@ -18,8 +17,9 @@ import {Input} from "@/components/ui/input";
 import {Button} from "@/components/ui/button";
 import {cn} from "@/lib/utils";
 import {useStatusStore} from "@/store/statusStore";
-import {X} from "lucide-react";
 import {useTranslation} from "@/locales/useTranslation.ts";
+import useIsMobile from "@/hooks/useIsMobile.ts";
+import {type ChangeEvent, type FormEvent, type ReactNode, useCallback, useMemo, useState} from "react";
 
 const colors = [
     {value: "red", class: "bg-red-500"},
@@ -32,52 +32,20 @@ const colors = [
 ];
 
 interface CreateStatusDialogProps {
-    trigger?: React.ReactNode;
+    trigger?: ReactNode;
 }
 
-// Hook to detect if we're on mobile - optimized to prevent unnecessary re-renders
-function useIsMobile() {
-    const [isMobile, setIsMobile] = React.useState(() => {
-        // Initialize with correct value to prevent hydration mismatch
-        if (typeof window !== 'undefined') {
-            return window.innerWidth < 768;
-        }
-        return false;
-    });
-
-    React.useEffect(() => {
-        const checkIsMobile = () => {
-            const mobile = window.innerWidth < 768;
-            setIsMobile(prev => prev !== mobile ? mobile : prev); // Only update if different
-        };
-
-        // Add debounce to prevent excessive re-renders
-        let timeoutId: NodeJS.Timeout;
-        const debouncedCheck = () => {
-            clearTimeout(timeoutId);
-            timeoutId = setTimeout(checkIsMobile, 100);
-        };
-
-        window.addEventListener('resize', debouncedCheck);
-        return () => {
-            window.removeEventListener('resize', debouncedCheck);
-            clearTimeout(timeoutId);
-        };
-    }, []);
-
-    return isMobile;
-}
 
 export function CreateStatusDialog({trigger}: CreateStatusDialogProps) {
-    const [open, setOpen] = React.useState(false);
-    const [selectedColor, setSelectedColor] = React.useState<string>("red");
-    const [inputValue, setInputValue] = React.useState("");
+    const [open, setOpen] =
+        useState(false);
+    const [selectedColor, setSelectedColor] = useState<string>("red");
+    const [inputValue, setInputValue] = useState("");
     const addStatus = useStatusStore((state) => state.addStatus);
     const isMobile = useIsMobile();
     const {t} = useTranslation();
 
-    // Reset form when dialog closes
-    const handleOpenChange = React.useCallback((newOpen: boolean) => {
+    const handleOpenChange = useCallback((newOpen: boolean) => {
         setOpen(newOpen);
         if (!newOpen) {
             setInputValue("");
@@ -85,7 +53,7 @@ export function CreateStatusDialog({trigger}: CreateStatusDialogProps) {
         }
     }, []);
 
-    const onSubmit = React.useCallback((e: React.FormEvent<HTMLFormElement>) => {
+    const onSubmit = useCallback((e: FormEvent<HTMLFormElement>) => {
         e.preventDefault();
 
         if (inputValue.trim()) {
@@ -99,16 +67,15 @@ export function CreateStatusDialog({trigger}: CreateStatusDialogProps) {
         }
     }, [inputValue, selectedColor, addStatus]);
 
-    const handleColorSelect = React.useCallback((colorValue: string) => {
+    const handleColorSelect = useCallback((colorValue: string) => {
         setSelectedColor(colorValue);
     }, []);
 
-    const handleInputChange = React.useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleInputChange = useCallback((e: ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.target.value);
     }, []);
 
-    // Memoize FormContent to prevent unnecessary re-renders
-    const FormContent = React.useMemo(() => (
+    const FormContent = useMemo(() => (
         <div className="md:px-6 md:pb-6 space-y-4">
             <form onSubmit={onSubmit} className="space-y-4">
                 <div className="grid gap-2">
