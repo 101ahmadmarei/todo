@@ -7,8 +7,8 @@ import {LanguageProvider} from '@/components/language-provider'
 
 createRoot(document.getElementById('root')!).render(
     <StrictMode>
-        <ThemeProvider defaultTheme="light" storageKey="haunted-todo-theme">
-            <LanguageProvider defaultLanguage="en" storageKey="haunted-todo-language">
+        <ThemeProvider defaultTheme="light" storageKey="theme">
+            <LanguageProvider defaultLanguage="en" storageKey="language">
                 <App/>
             </LanguageProvider>
         </ThemeProvider>
