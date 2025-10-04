@@ -30,16 +30,19 @@ A modern todo application built with React, TypeScript, and Vite.
 
 <img width="583" height="455" alt="Screenshot 2025-10-05 at 2 14 57 AM" src="https://github.com/user-attachments/assets/26e5fcfc-5ab6-431d-b4cb-bc41e2457d00" />
 
-*[Screenshot Placeholder: Mobile View]*<img width="342" height="731" alt="Screenshot 2025-10-05 at 2 17 16 AM" src="https://github.com/user-attachments/assets/939d8edb-fd4b-4b4b-b15e-264cc75fcb48" />
+*[Screenshot Placeholder: Mobile View]*
+
+<img width="342" height="731" alt="Screenshot 2025-10-05 at 2 17 16 AM" src="https://github.com/user-attachments/assets/939d8edb-fd4b-4b4b-b15e-264cc75fcb48" />
 
 <img width="338" height="607" alt="Screenshot 2025-10-05 at 2 17 01 AM" src="https://github.com/user-attachments/assets/f831c2b0-bb42-4e06-a22c-0652c3e1f19d" /><img width="340" height="350" alt="Screenshot 2025-10-05 at 2 17 32 AM" src="https://github.com/user-attachments/assets/8170752a-2ad7-4bb9-92a4-f23cdf22c69e" />
 
 
-## Tech Stack<img width="339" height="733" alt="Screenshot 2025-10-05 at 2 18 03 AM" src="https://github.com/user-attachments/assets/db6ddbbe-d2c7-4789-8421-290f611a4c77" />
+<img width="339" height="733" alt="Screenshot 2025-10-05 at 2 18 03 AM" src="https://github.com/user-attachments/assets/db6ddbbe-d2c7-4789-8421-290f611a4c77" />
 <img width="338" height="732" alt="Screenshot 2025-10-05 at 2 18 13 AM" src="https://github.com/user-attachments/assets/97b14628-fbb7-4508-a03c-0720bb574de6" />
 
 <img width="340" height="290" alt="Screenshot 2025-10-05 at 2 17 48 AM" src="https://github.com/user-attachments/assets/6d6dd418-58b3-4768-b82f-7e087a712f27" />
 
+## Tech Stack
 - React 19 + TypeScript
 - Vite + Tailwind CSS
 - Zustand (State Management)
