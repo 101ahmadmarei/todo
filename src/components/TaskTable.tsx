@@ -18,12 +18,13 @@ import {
     DropdownMenuTrigger,
     DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
-import {MoreHorizontal, Edit, Trash, ArrowRightLeft, Star} from "lucide-react"
+import {MoreHorizontal, Edit, Trash, ArrowRightLeft, Star, ChevronLeft, ChevronRight} from "lucide-react"
 import {CreateTaskDialog} from "@/components/CreateTaskDialog"
 import {DeleteTaskDialog} from "@/components/DeleteTaskDialog"
 import {DeleteStatusDialog} from "@/components/DeleteStatusDialog"
 import {useState} from "react"
 import {useTranslation} from "@/hooks/useTranslation"
+import {useLanguage} from "@/components/language-provider"
 
 interface TaskTableProps {
     tasks: Task[];
@@ -39,6 +40,8 @@ export default function TaskTable({tasks}: TaskTableProps) {
     const [deletingStatus, setDeletingStatus] = useState<{ id: string, title: string } | null>(null);
     const [currentPage, setCurrentPage] = useState(1);
     const {t} = useTranslation();
+    const {language} = useLanguage();
+    const isRTL = language === 'ar';
 
     // Pagination calculations
     const totalPages = Math.ceil(tasks.length / ITEMS_PER_PAGE);
@@ -99,11 +102,13 @@ export default function TaskTable({tasks}: TaskTableProps) {
             <Table>
                 <TableHeader>
                     <TableRow>
-                        <TableHead className="w-[50px]"></TableHead>
-                        <TableHead>{t('table.title')}</TableHead>
-                        <TableHead className="hidden md:table-cell">{t('table.description')}</TableHead>
-                        <TableHead className=" md:w-[120px]">{t('table.status')}</TableHead>
-                        <TableHead className="text-right w-[50px]"></TableHead>
+                        <TableHead className={`w-[50px] ${isRTL ? 'text-right' : ''}`}></TableHead>
+                        <TableHead className={isRTL ? 'text-right' : ''}>{t('table.title')}</TableHead>
+                        <TableHead
+                            className={`hidden md:table-cell ${isRTL ? 'text-right' : ''}`}>{t('table.description')}</TableHead>
+                        <TableHead
+                            className={`md:w-[120px] ${isRTL ? 'text-right' : ''}`}>{t('table.status')}</TableHead>
+                        <TableHead className={`w-[50px] ${isRTL ? 'text-left' : 'text-right'}`}></TableHead>
                     </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -123,7 +128,7 @@ export default function TaskTable({tasks}: TaskTableProps) {
                             const taskStatus = getStatusById(task.status);
                             return (
                                 <TableRow key={task.id}>
-                                    <TableCell className="text-left">
+                                    <TableCell className={isRTL ? 'text-right' : 'text-left'}>
                                         <Button
                                             variant="ghost"
                                             size="sm"
@@ -139,16 +144,18 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                             />
                                         </Button>
                                     </TableCell>
-                                    <TableCell className="font-medium text-left text-text">
+                                    <TableCell
+                                        className={`font-medium text-text ${isRTL ? 'text-right' : 'text-left'}`}>
                                         {task.title}
                                     </TableCell>
-                                    <TableCell className="text-left max-w-[200px] hidden md:table-cell">
-                                        <div className="truncate text-text"
+                                    <TableCell
+                                        className={`max-w-[200px] hidden md:table-cell ${isRTL ? 'text-right' : 'text-left'}`}>
+                                        <div className={`truncate text-text ${isRTL ? 'text-right' : ''}`}
                                              title={task.description || t('table.noDescription')}>
                                             {task.description || t('table.noDescription')}
                                         </div>
                                     </TableCell>
-                                    <TableCell className="text-left">
+                                    <TableCell className={isRTL ? 'text-right' : 'text-left'}>
                                         {/* Mobile: Show only color dot */}
                                         <div className="md:hidden">
                                             <div
@@ -175,17 +182,17 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                             </Badge>
                                         </div>
                                     </TableCell>
-                                    <TableCell className="text-right">
+                                    <TableCell className={isRTL ? 'text-left' : 'text-right'}>
                                         <DropdownMenu>
                                             <DropdownMenuTrigger asChild>
                                                 <Button variant="ghost" size="sm" className="h-8 w-8 p-0">
                                                     <MoreHorizontal className="h-4 w-4"/>
                                                 </Button>
                                             </DropdownMenuTrigger>
-                                            <DropdownMenuContent align="end">
+                                            <DropdownMenuContent align={isRTL ? 'start' : 'end'}>
                                                 {/* Header for status options */}
                                                 <div
-                                                    className="px-2 py-1.5 text-sm font-medium text-muted-foreground flex items-center gap-2 text-text">
+                                                    className="px-2 py-1.5 text-sm font-medium text-muted-foreground flex items-center gap-2">
                                                     <ArrowRightLeft className="h-4 w-4"/>
                                                     {t('table.changeTo')}
                                                 </div>
@@ -210,7 +217,8 @@ export default function TaskTable({tasks}: TaskTableProps) {
 
                                                             <span className="text-text">{status.title}</span>
                                                             {task.status === status.id &&
-                                                                <span className="ml-auto text-text">✓</span>}
+                                                                <span
+                                                                    className={`text-text ${isRTL ? 'mr-auto' : 'ml-auto'}`}>✓</span>}
                                                         </div>
                                                     </DropdownMenuItem>
                                                 ))}
@@ -219,7 +227,7 @@ export default function TaskTable({tasks}: TaskTableProps) {
 
                                                 <DropdownMenuItem onClick={() => handleEditTask(task)}
                                                                   className="text-text">
-                                                    <Edit className="mr-2 h-4 w-4"/>
+                                                    <Edit className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`}/>
                                                     {t('table.edit')}
                                                 </DropdownMenuItem>
 
@@ -227,7 +235,7 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                                     onClick={() => handleDeleteTask(task.id, task.title)}
                                                     className="text-text"
                                                 >
-                                                    <Trash className="mr-2 h-4 w-4"/>
+                                                    <Trash className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`}/>
                                                     {t('table.deleteTask')}
                                                 </DropdownMenuItem>
 
@@ -240,7 +248,7 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                                     }}
                                                     className="text-text"
                                                 >
-                                                    <Trash className="mr-2 h-4 w-4"/>
+                                                    <Trash className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`}/>
                                                     {t('table.deleteStatus')}
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
@@ -284,32 +292,47 @@ export default function TaskTable({tasks}: TaskTableProps) {
                     }}
                 />
             )}
-
             {tasks.length > 0 && (
-                <div className="flex justify-between items-center p-4">
+                <div className="flex items-center justify-between p-4">
+                    {/* Previous Button */}
                     <Button
                         variant="outline"
                         size="sm"
-                        className="text-text"
                         onClick={handlePreviousPage}
                         disabled={currentPage === 1}
+                        className="flex items-center gap-2 text-text"
                     >
-                        {t('table.previous')}
+                        <ChevronLeft
+                            className={`h-4 w-4 transition-transform ${
+                                isRTL ? "rotate-180" : ""
+                            }`}
+                        />
+                        {t("table.previous")}
                     </Button>
-                    <span className="text-sm text-muted-foreground text-text">
-            {startItem}-{endItem} {t('table.of')} {totalItems}
-          </span>
+
+                    {/* Pagination info */}
+                    <span className="text-sm text-muted-foreground">
+      {startItem}–{endItem} {t("table.of")} {totalItems}
+    </span>
+
+                    {/* Next Button */}
                     <Button
                         variant="outline"
                         size="sm"
-                        className="text-text"
                         onClick={handleNextPage}
                         disabled={currentPage === totalPages}
+                        className="flex items-center gap-2 text-text"
                     >
-                        {t('table.next')}
+                        {t("table.next")}
+                        <ChevronRight
+                            className={`h-4 w-4 transition-transform ${
+                                isRTL ? "rotate-180" : ""
+                            }`}
+                        />
                     </Button>
                 </div>
             )}
+
         </div>
     )
 }

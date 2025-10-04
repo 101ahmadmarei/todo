@@ -25,13 +25,6 @@ import {useTaskStore, type Task} from "@/store/taskStore";
 import {useStatusStore} from "@/store/statusStore";
 import {useTranslation} from "@/hooks/useTranslation";
 
-interface CreateTaskDialogProps {
-    trigger?: React.ReactNode;
-    editMode?: boolean;
-    editTask?: Task;
-    onClose?: () => void;
-}
-
 // Hook to detect if we're on mobile
 function useIsMobile() {
     const [isMobile, setIsMobile] = React.useState(false);
@@ -47,6 +40,13 @@ function useIsMobile() {
     }, []);
 
     return isMobile;
+}
+
+interface CreateTaskDialogProps {
+    trigger?: React.ReactNode;
+    editMode?: boolean;
+    editTask?: Task;
+    onClose?: () => void;
 }
 
 export function CreateTaskDialog({trigger, editMode = false, editTask, onClose}: CreateTaskDialogProps) {

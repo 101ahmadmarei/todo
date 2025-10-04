@@ -52,8 +52,8 @@
     "edit": "Edit",
     "deleteTask": "Delete Task",
     "deleteStatus": "Delete Status",
-    "previous": "← Previous",
-    "next": "Next →",
+    "previous": "Previous",
+    "next": "Next",
     "of": "of"
   },
   "header": {

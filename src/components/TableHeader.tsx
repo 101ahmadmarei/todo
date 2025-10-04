@@ -13,6 +13,7 @@ import {DeleteStatusDialog} from "@/components/DeleteStatusDialog.tsx"
 import {CircleFadingPlus, Search} from "lucide-react"
 import {useState} from "react"
 import {useTranslation} from "@/hooks/useTranslation"
+import {useLanguage} from "@/components/language-provider"
 
 interface TaskTableHeaderProps {
     onStatusChange?: (statusId: string) => void
@@ -30,6 +31,8 @@ export default function TaskTableHeader({
         title: string
     } | null>(null)
     const {t} = useTranslation()
+    const {language} = useLanguage()
+    const isRTL = language === 'ar'
 
     const handleStatusChange = (value: string) => {
         onStatusChange?.(value)
@@ -69,31 +72,33 @@ export default function TaskTableHeader({
                 {/* Search */}
                 <div className="relative flex-1 w-full md:w-auto">
                     <Search
-                        className="absolute left-3 top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4"/>
+                        className={`absolute top-1/2 transform -translate-y-1/2 text-muted-foreground h-4 w-4 ${
+                            isRTL ? 'right-3' : 'left-3'
+                        }`}
+                    />
                     <Input
                         type="search"
                         placeholder={t('header.searchPlaceholder')}
-                        className="pl-10 flex-1"
+                        className={`flex-1 ${isRTL ? 'pr-10 text-right' : 'pl-10'}`}
                         onChange={handleSearchChange}
                     />
                 </div>
 
                 {/* Status Select */}
-                <Select defaultValue="status" onValueChange={handleStatusChange}>
-                    <SelectTrigger className="w-full md:w-[180px]">
-                        {/* ✅ Only show selected status name */}
+                <Select
+                    dir={isRTL ? 'rtl' : 'ltr'}
+                    onValueChange={handleStatusChange}>
+                    <SelectTrigger className={`w-full md:w-[180px] `}>
                         <SelectValue placeholder={t('header.statusPlaceholder')}/>
                     </SelectTrigger>
 
                     <SelectContent>
-                        <SelectItem value="status">{t('table.status')}</SelectItem>
                         {statuses.map((status) => {
                             const taskCount = getTaskCountForStatus(status.id)
                             return (
-                                <SelectItem key={status.id} value={status.id}
-                                >
-                                    <div className="flex items-center justify-between w-full">
-                                        <div className="flex items-center gap-2  ">
+                                <SelectItem key={status.id} value={status.id}>
+                                    <div className="flex items-center gap-2 justify-between w-full">
+                                        <div className="flex items-center gap-2">
                                             <div
                                                 className={`w-4 h-4 rounded-sm ${getColorClass(
                                                     status.color
