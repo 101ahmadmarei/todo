@@ -24,6 +24,7 @@ import {Button} from "@/components/ui/button";
 import {useTaskStore, type Task} from "@/store/taskStore";
 import {useStatusStore} from "@/store/statusStore";
 import {useTranslation} from "@/hooks/useTranslation";
+import {useLanguage} from "@/components/language-provider.tsx";
 
 // Hook to detect if we're on mobile
 function useIsMobile() {
@@ -55,6 +56,9 @@ export function CreateTaskDialog({trigger, editMode = false, editTask, onClose}:
     const statuses = useStatusStore((state) => state.statuses);
     const isMobile = useIsMobile();
     const {t} = useTranslation();
+    const {language} = useLanguage()
+    const isRTL = language === 'ar'
+
 
     React.useEffect(() => {
         if (editMode) {
@@ -125,6 +129,7 @@ export function CreateTaskDialog({trigger, editMode = false, editTask, onClose}:
                     defaultValue={editMode && editTask ? editTask.status : undefined}
                     name="status"
                     required
+                    dir={isRTL ? 'rtl' : 'ltr'}
                 >
                     <SelectTrigger id="status">
                         <SelectValue placeholder={t('dialogs.createTask.statusPlaceholder')}/>

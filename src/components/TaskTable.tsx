@@ -192,7 +192,7 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                             <DropdownMenuContent align={isRTL ? 'start' : 'end'}>
                                                 {/* Header for status options */}
                                                 <div
-                                                    className="px-2 py-1.5 text-sm font-medium text-muted-foreground flex items-center gap-2">
+                                                    className={`px-2 py-1.5 text-sm font-medium text-muted-foreground flex items-center gap-2 ${isRTL ? 'flex-row-reverse' : ''}`}>
                                                     <ArrowRightLeft className="h-4 w-4"/>
                                                     {t('table.changeTo')}
                                                 </div>
@@ -202,9 +202,10 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                                     <DropdownMenuItem
                                                         key={status.id}
                                                         onClick={() => handleStatusChange(task.id, status.id)}
-                                                        className={`text-text ${task.status === status.id ? 'bg-accent' : ''}`}
+                                                        className={`text-text ${task.status === status.id ? 'bg-accent' : ''} ${isRTL ? 'flex-row-reverse' : ''}`}
                                                     >
-                                                        <div className="flex items-center gap-2">
+                                                        <div
+                                                            className={`flex items-center gap-2 w-full ${isRTL ? 'flex-row-reverse' : ''}`}>
                                                             <div className={`w-4 h-4 rounded-[4px] ${
                                                                 status.color === 'red' ? 'bg-red-500' :
                                                                     status.color === 'purple' ? 'bg-purple-500' :
@@ -226,17 +227,18 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                                 <DropdownMenuSeparator/>
 
                                                 <DropdownMenuItem onClick={() => handleEditTask(task)}
-                                                                  className="text-text">
-                                                    <Edit className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`}/>
-                                                    {t('table.edit')}
+                                                                  className={`text-text ${isRTL ? 'flex-row-reverse' : ''}`}>
+                                                    <Edit className="h-4 w-4"/>
+                                                    <span className={isRTL ? 'mr-2' : 'ml-2'}>{t('table.edit')}</span>
                                                 </DropdownMenuItem>
 
                                                 <DropdownMenuItem
                                                     onClick={() => handleDeleteTask(task.id, task.title)}
-                                                    className="text-text"
+                                                    className={`text-text ${isRTL ? 'flex-row-reverse' : ''}`}
                                                 >
-                                                    <Trash className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`}/>
-                                                    {t('table.deleteTask')}
+                                                    <Trash className="h-4 w-4"/>
+                                                    <span
+                                                        className={isRTL ? 'mr-2' : 'ml-2'}>{t('table.deleteTask')}</span>
                                                 </DropdownMenuItem>
 
                                                 <DropdownMenuItem
@@ -246,10 +248,11 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                                             handleDeleteStatus(taskStatus.id, taskStatus.title);
                                                         }
                                                     }}
-                                                    className="text-text"
+                                                    className={`text-text ${isRTL ? 'flex-row-reverse' : ''}`}
                                                 >
-                                                    <Trash className={`h-4 w-4 ${isRTL ? 'ml-2' : 'mr-2'}`}/>
-                                                    {t('table.deleteStatus')}
+                                                    <Trash className="h-4 w-4"/>
+                                                    <span
+                                                        className={isRTL ? 'mr-2' : 'ml-2'}>{t('table.deleteStatus')}</span>
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>

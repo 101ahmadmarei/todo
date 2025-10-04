@@ -109,7 +109,7 @@ export function CreateStatusDialog({trigger}: CreateStatusDialogProps) {
 
     // Memoize FormContent to prevent unnecessary re-renders
     const FormContent = React.useMemo(() => (
-        <div className="px-6 pb-6 space-y-4">
+        <div className="md:px-6 md:pb-6 space-y-4">
             <form onSubmit={onSubmit} className="space-y-4">
                 <div className="grid gap-2">
                     <Label htmlFor="title">{t('dialogs.createStatus.statusTitle')}</Label>
@@ -131,7 +131,7 @@ export function CreateStatusDialog({trigger}: CreateStatusDialogProps) {
                             <div
                                 key={c.value}
                                 className={cn(
-                                    "flex justify-center items-center h-8 w-8 rounded-md border-2",
+                                    "flex justify-center items-center p-1 rounded-lg border-2",
                                     selectedColor === c.value
                                         ? "border-red-600"
                                         : "border-transparent"
@@ -165,12 +165,9 @@ export function CreateStatusDialog({trigger}: CreateStatusDialogProps) {
 
                 <SheetContent side="bottom" className="h-auto">
                     <div className="relative px-6 py-4">
-                        <div className="flex justify-between items-center">
+                        <SheetHeader className="m-0">
                             <SheetTitle className="text-lg">{t('dialogs.createStatus.title')}</SheetTitle>
-                            <Button variant="ghost" size="sm" onClick={() => setOpen(false)}>
-                                <X className="h-4 w-4"/>
-                            </Button>
-                        </div>
+                        </SheetHeader>
                     </div>
                     {FormContent}
                 </SheetContent>
@@ -184,7 +181,7 @@ export function CreateStatusDialog({trigger}: CreateStatusDialogProps) {
                 {trigger || <Button>New Status</Button>}
             </DialogTrigger>
 
-            <DialogContent className="sm:max-w-sm p-0 overflow-hidden">
+            <DialogContent className="sm:max-w-md p-0 overflow-hidden">
                 <div className="relative px-6 py-4">
                     <DialogHeader className="m-0">
                         <DialogTitle className="text-lg">{t('dialogs.createStatus.title')}</DialogTitle>
