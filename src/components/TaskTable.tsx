@@ -18,7 +18,17 @@ import {
     DropdownMenuTrigger,
     DropdownMenuSeparator,
 } from "@/components/ui/dropdown-menu"
-import {MoreHorizontal, Edit, Trash, ArrowRightLeft, Star, ChevronLeft, ChevronRight} from "lucide-react"
+import {
+    MoreHorizontal,
+    Edit,
+    Trash,
+    ArrowRightLeft,
+    Star,
+    ChevronLeft,
+    ChevronRight,
+    ArrowRight,
+    ArrowLeft
+} from "lucide-react"
 import {CreateTaskDialog} from "@/components/CreateTaskDialog"
 import {DeleteTaskDialog} from "@/components/DeleteTaskDialog"
 import {DeleteStatusDialog} from "@/components/DeleteStatusDialog"
@@ -305,7 +315,7 @@ export default function TaskTable({tasks}: TaskTableProps) {
                         disabled={currentPage === 1}
                         className="flex items-center gap-2 text-text"
                     >
-                        <ChevronLeft
+                        <ArrowLeft
                             className={`h-4 w-4 transition-transform ${
                                 isRTL ? "rotate-180" : ""
                             }`}
@@ -327,7 +337,7 @@ export default function TaskTable({tasks}: TaskTableProps) {
                         className="flex items-center gap-2 text-text"
                     >
                         {t("table.next")}
-                        <ChevronRight
+                        <ArrowRight
                             className={`h-4 w-4 transition-transform ${
                                 isRTL ? "rotate-180" : ""
                             }`}
