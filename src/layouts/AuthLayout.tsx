@@ -12,13 +12,13 @@ export default function AuthLayout() {
                     <div className="hidden lg:flex  gap-4">
                         <ThemeAndLanguage/>
                     </div>
-                    <img src="/src/assets/Logo-3.png" alt="Ghost" className="lg:hidden"/>
+                    <img src="/assets/Logo-3.png" alt="Ghost" className="lg:hidden"/>
                 </div>
                 <div className="flex  flex-1 items-center justify-center ">
                     <Outlet/>
                 </div>
                 <div className=" w-full flex justify-center  lg:justify-end">
-                    <img src="/src/assets/Logo-2.png" alt="Ghost" className="lg:w-30"/>
+                    <img src="/assets/Logo-2.png" alt="Ghost" className="lg:w-30"/>
                 </div>
             </div>
         </div>

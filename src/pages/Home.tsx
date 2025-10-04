@@ -51,7 +51,7 @@ export default function Home() {
 
             {!hasStatuses ? (
                 <div className="w-full h-[80vh] flex flex-col items-center justify-center text-center px-3 gap-4">
-                    <img src="/src/assets/ghost-3.png" alt="Ghost"/>
+                    <img src="/assets/ghost-3.png" alt="Ghost"/>
                     <p className="text-xl mt-4 font-bold">
                         {t('home.emptyStatusTitle')}
                     </p>

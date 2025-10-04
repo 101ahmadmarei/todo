@@ -6,12 +6,12 @@ export default function AuthSidebar() {
     return (
         <div className="hidden lg:flex flex-col justify-between bg-primary text-white w-[520px] p-12">
             <div className="flex  justify-center gap-2">
-                <img src="/src/assets/Logo.png" alt="Ghost" className="w-auto mt-8"/>
+                <img src="/assets/Logo.png" alt="Ghost" className="w-auto mt-8"/>
 
             </div>
 
             <div className="">
-                <img src="/src/assets/ghost-2.png" alt="Ghost" className=""/>
+                <img src="/assets/ghost-2.png" alt="Ghost" className=""/>
                 <div
                     className="bg-primary-400 text-center text-lg  text-white  px-4 py-2 rounded-lg w-[300px] mx-auto shadow">
                     {t('authSidebar.message')}
@@ -19,7 +19,7 @@ export default function AuthSidebar() {
             </div>
 
             <div className="flex items-center gap-2">
-                <img src="/src/assets/ghost-1.png" alt="Ghost" className="h-28 w-auto mb-6"/>
+                <img src="/assets/ghost-1.png" alt="Ghost" className="h-28 w-auto mb-6"/>
                 <div>
                     <p className="text-sm">Tech Valley</p>
                     <p className="text-sm opacity-80">Tech Valley</p>

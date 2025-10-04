@@ -57,7 +57,7 @@ export default function Navbar() {
         <nav className="py-3   bg-background rounded-t-lg">
             <div className="container px-3 mx-auto flex items-center justify-between">
                 <div className="flex items-center gap-2">
-                    <img src="/src/assets/Logo-3.png" alt="Todo" className="h-8 w-auto"/>
+                    <img src="/assets/Logo-3.png" alt="Todo" className="h-8 w-auto"/>
                 </div>
 
                 <div className="flex items-center gap-4">
