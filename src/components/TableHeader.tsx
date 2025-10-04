@@ -12,7 +12,7 @@ import {CreateStatusDialog} from "@/components/CreateStatusDialog.tsx"
 import {DeleteStatusDialog} from "@/components/DeleteStatusDialog.tsx"
 import {CircleFadingPlus, Search} from "lucide-react"
 import {useState} from "react"
-import {useTranslation} from "@/hooks/useTranslation"
+import {useTranslation} from "@/locales/useTranslation.ts"
 import {useLanguage} from "@/components/language-provider"
 
 interface TaskTableHeaderProps {

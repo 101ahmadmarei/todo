@@ -19,7 +19,7 @@ import {Button} from "@/components/ui/button";
 import {cn} from "@/lib/utils";
 import {useStatusStore} from "@/store/statusStore";
 import {X} from "lucide-react";
-import {useTranslation} from "@/hooks/useTranslation";
+import {useTranslation} from "@/locales/useTranslation.ts";
 
 const colors = [
     {value: "red", class: "bg-red-500"},

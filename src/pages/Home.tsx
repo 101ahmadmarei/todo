@@ -7,7 +7,7 @@ import {useStatusStore} from "@/store/statusStore";
 import {CreateTaskDialog} from "@/components/CreateTaskDialog.tsx";
 import {useTaskStore} from "@/store/taskStore";
 import {useState, useMemo} from "react";
-import {useTranslation} from "@/hooks/useTranslation";
+import {useTranslation} from "@/locales/useTranslation.ts";
 
 export default function Home() {
     const statuses = useStatusStore((state) => state.statuses);

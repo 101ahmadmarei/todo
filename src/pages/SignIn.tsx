@@ -5,7 +5,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {Formik, Form, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import {useState} from 'react';
-import {useTranslation} from '@/hooks/useTranslation';
+import {useTranslation} from '@/locales/useTranslation.ts';
 import {Loader2Icon} from "lucide-react";
 
 interface FormData {

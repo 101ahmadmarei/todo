@@ -15,7 +15,7 @@ import {
 } from "@/components/ui/sheet";
 import {Button} from "@/components/ui/button";
 import {useTaskStore} from "@/store/taskStore";
-import {useTranslation} from "@/hooks/useTranslation";
+import {useTranslation} from "@/locales/useTranslation.ts";
 
 interface DeleteTaskDialogProps {
     taskId: string;

@@ -1,4 +1,4 @@
-import {useTranslation} from "@/hooks/useTranslation.ts";
+import {useTranslation} from "@/locales/useTranslation.ts";
 
 export default function AuthSidebar() {
     const {t} = useTranslation();

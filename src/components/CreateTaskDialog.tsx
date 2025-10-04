@@ -23,7 +23,7 @@ import {
 import {Button} from "@/components/ui/button";
 import {useTaskStore, type Task} from "@/store/taskStore";
 import {useStatusStore} from "@/store/statusStore";
-import {useTranslation} from "@/hooks/useTranslation";
+import {useTranslation} from "@/locales/useTranslation.ts";
 import {useLanguage} from "@/components/language-provider.tsx";
 
 // Hook to detect if we're on mobile

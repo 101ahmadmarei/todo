@@ -2,17 +2,15 @@ import {create} from 'zustand'
 import {persist} from 'zustand/middleware'
 
 export interface Status {
-    id: string
+    id: number
     title: string
     color: string
-    createdAt: number
 }
 
 interface StatusStore {
     statuses: Status[]
     addStatus: (status: Omit<Status, 'id' | 'createdAt'>) => void
-    removeStatus: (id: string) => void
-    updateStatus: (id: string, updates: Partial<Omit<Status, 'id'>>) => void
+    removeStatus: (id: number) => void
     clearStatuses: () => void
 }
 
@@ -24,8 +22,7 @@ export const useStatusStore = create<StatusStore>()(
             addStatus: (status) => set((state) => ({
                 statuses: [...state.statuses, {
                     ...status,
-                    id: crypto.randomUUID(),
-                    createdAt: Date.now()
+                    id: Date.now()
                 }]
             })),
 
@@ -33,11 +30,6 @@ export const useStatusStore = create<StatusStore>()(
                 statuses: state.statuses.filter(status => status.id !== id)
             })),
 
-            updateStatus: (id, updates) => set((state) => ({
-                statuses: state.statuses.map(status =>
-                    status.id === id ? {...status, ...updates} : status
-                )
-            })),
 
             clearStatuses: () => set({statuses: []})
         }),

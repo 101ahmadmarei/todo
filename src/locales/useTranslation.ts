@@ -1,4 +1,4 @@
-import {useLanguage} from "@/components/language-provider";
+import {useLanguage} from "@/components/language-provider.tsx";
 import enTranslations from "@/locales/en.json";
 import arTranslations from "@/locales/ar.json";
 

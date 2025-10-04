@@ -5,7 +5,7 @@ import {Link, useNavigate} from "react-router-dom";
 import {Formik, Form, ErrorMessage} from 'formik';
 import * as Yup from 'yup';
 import {useState, useRef} from 'react';
-import {useTranslation} from '@/hooks/useTranslation';
+import {useTranslation} from '@/locales/useTranslation.ts';
 import {Loader2Icon, UploadIcon} from "lucide-react";
 import {Avatar, AvatarImage} from "@/components/ui/avatar.tsx";
 

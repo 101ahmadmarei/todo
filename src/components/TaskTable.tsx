@@ -33,7 +33,7 @@ import {CreateTaskDialog} from "@/components/CreateTaskDialog"
 import {DeleteTaskDialog} from "@/components/DeleteTaskDialog"
 import {DeleteStatusDialog} from "@/components/DeleteStatusDialog"
 import {useState} from "react"
-import {useTranslation} from "@/hooks/useTranslation"
+import {useTranslation} from "@/locales/useTranslation.ts"
 import {useLanguage} from "@/components/language-provider"
 
 interface TaskTableProps {

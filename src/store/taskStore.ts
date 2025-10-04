@@ -2,19 +2,18 @@ import {create} from 'zustand'
 import {persist} from 'zustand/middleware'
 
 export interface Task {
-    id: string
+    id: number
     title: string
     description: string
     status: string
     starred: boolean
-    createdAt: number
 }
 
 interface TaskStore {
     tasks: Task[]
     addTask: (task: Omit<Task, 'id' | 'createdAt'>) => void
-    removeTask: (id: string) => void
-    updateTask: (id: string, updates: Partial<Omit<Task, 'id'>>) => void
+    removeTask: (id: number) => void
+    updateTask: (id: number, updates: Partial<Omit<Task, 'id'>>) => void
     clearTasks: () => void
 }
 
@@ -26,8 +25,7 @@ export const useTaskStore = create<TaskStore>()(
             addTask: (task) => set((state) => ({
                 tasks: [...state.tasks, {
                     ...task,
-                    id: crypto.randomUUID(),
-                    createdAt: Date.now()
+                    id: Date.now(),
                 }]
             })),
 
