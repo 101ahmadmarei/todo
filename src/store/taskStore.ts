@@ -19,7 +19,7 @@ interface TaskStore {
 
 export const useTaskStore = create<TaskStore>()(
     persist(
-        (set, get) => ({
+        (set) => ({
             tasks: [],
 
             addTask: (task) => set((state) => ({

@@ -16,7 +16,7 @@ interface StatusStore {
 
 export const useStatusStore = create<StatusStore>()(
     persist(
-        (set, get) => ({
+        (set) => ({
             statuses: [],
 
             addStatus: (status) => set((state) => ({

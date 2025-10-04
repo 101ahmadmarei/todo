@@ -44,7 +44,7 @@ export default function SignUp() {
         avatar: null
     };
 
-    const handleAvatarUpload = (setFieldValue: any) => {
+    const handleAvatarUpload = () => {
         fileInputRef.current?.click();
     };
 
@@ -120,7 +120,7 @@ export default function SignUp() {
                                 <Button
                                     type="button"
                                     variant="outline"
-                                    onClick={() => handleAvatarUpload(setFieldValue)}
+                                    onClick={() => handleAvatarUpload()}
                                     disabled={isSubmitting}
                                     size="sm"
                                     className="font-bold"
