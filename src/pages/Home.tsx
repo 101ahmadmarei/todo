@@ -21,8 +21,7 @@ export default function Home() {
     const filteredTasks = useMemo(() => {
         let filtered = tasks;
 
-        // Filter by status
-        if (selectedStatus !== "status" && selectedStatus !== "all") {
+        if (selectedStatus !== "status") {
             filtered = filtered.filter(task => task.status === selectedStatus);
         }
 

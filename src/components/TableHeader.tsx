@@ -93,6 +93,8 @@ export default function TaskTableHeader({
                     </SelectTrigger>
 
                     <SelectContent>
+                        <SelectItem value="status" className="text-subtext">{t('header.allStatuses')}</SelectItem>
+
                         {statuses.map((status) => {
                             const taskCount = getTaskCountForStatus(status.id)
                             return (
@@ -117,7 +119,7 @@ export default function TaskTableHeader({
                         <CreateStatusDialog
                             trigger={
                                 <div
-                                    className="relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 text-sm outline-none hover:bg-accent hover:text-accent-foreground">
+                                    className=" relative flex w-full cursor-default select-none items-center rounded-sm py-1.5 pl-2 text-sm outline-none hover:bg-accent hover:text-accent-foreground">
                                     <div className="flex items-center gap-2">
                                         <CircleFadingPlus className="w-4 h-4"/>
                                         {t('header.createStatus')}

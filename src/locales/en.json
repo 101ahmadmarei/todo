@@ -59,7 +59,9 @@
   "header": {
     "searchPlaceholder": "Search...",
     "statusPlaceholder": "Select status",
-    "createStatus": "Create Status"
+    "createStatus": "Create Status",
+    "status": "Status",
+    "allStatuses": "All Statuses"
   },
   "signin": {
     "title": "Sign in",

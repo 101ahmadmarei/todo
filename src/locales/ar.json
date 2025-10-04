@@ -125,6 +125,8 @@
   "header": {
     "searchPlaceholder": "بحث...",
     "statusPlaceholder": "اختر الحالة",
-    "createStatus": "إنشاء حالة"
+    "createStatus": "إنشاء حالة",
+    "status": "الحالة",
+    "allStatuses": "جميع الحالات"
   }
 }
