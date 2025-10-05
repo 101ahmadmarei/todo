@@ -1,4 +1,4 @@
-**# 👻 Haunted Todo
+# 👻 Haunted Todo
 
 A modern todo application built with React, TypeScript, and Vite.
 Live : https://todo-zou1.vercel.app**# 👻 Haunted ToDo
