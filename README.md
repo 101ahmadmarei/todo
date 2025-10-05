@@ -1,6 +1,15 @@
-# 👻 Haunted Todo
+**# 👻 Haunted Todo
 
 A modern todo application built with React, TypeScript, and Vite.
+Live : https://todo-zou1.vercel.app**# 👻 Haunted ToDo
+
+> _"The Haunted ToDo List — Tasks That Won’t Stay Buried!"_
+
+A sleek and modern To-Do application built with **React**, **TypeScript**, and **Vite**, featuring dark mode, localization (Arabic + English), and a smooth shadcn/UI design system.
+
+🌐 **Live Demo:** [todo-zou1.vercel.app](https://todo-zou1.vercel.app)
+
+---
 
 ## Features
 
