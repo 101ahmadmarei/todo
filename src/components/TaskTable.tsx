@@ -171,10 +171,10 @@ export default function TaskTable({tasks}: TaskTableProps) {
                                             onClick={() => handleStarClick(task.id, task.starred || false)}
                                         >
                                             <Star
-                                                className={`h-4 w-4 ${
+                                                className={`h-5 w-5 ${
                                                     task.starred
-                                                        ? 'fill-yellow-400 text-yellow-400'
-                                                        : 'text-gray-400 hover:text-yellow-400'
+                                                        ? 'fill-primary text-primary'
+                                                        : 'text-primary hover:fill-primary'
                                                 }`}
                                             />
                                         </Button>
